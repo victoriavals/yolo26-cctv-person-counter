@@ -1,0 +1,9 @@
+{
+ "run": "default",
+ "seconds": 9000.4,
+ "overrides": {
+  "name": "default"
+ },
+ "model": "D:/ML/person-counter/models/yolo26s.pt",
+ "weights": "D:\\ML\\person-counter\\runs\\person\\default/weights/best.pt"
+}

@@ -1,0 +1,16 @@
+{
+ "run": "tuned",
+ "seconds": 10227.2,
+ "overrides": {
+  "name": "tuned",
+  "hsv_v": 0.15,
+  "hsv_s": 0.4,
+  "scale": 0.3,
+  "degrees": 0.0,
+  "mosaic": 1.0,
+  "close_mosaic": 20,
+  "fliplr": 0.5
+ },
+ "model": "D:/ML/person-counter/models/yolo26s.pt",
+ "weights": "D:\\ML\\person-counter\\runs\\person\\tuned/weights/best.pt"
+}

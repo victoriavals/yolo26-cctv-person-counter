@@ -1,0 +1,94 @@
+{
+ "run": "default",
+ "conf": 0.25,
+ "n_images": 40,
+ "sizes": [
+  640,
+  416
+ ],
+ "gpu": "NVIDIA GeForce RTX 4060 Ti",
+ "hw_of": {
+  "pytorch_gpu": "GPU",
+  "pytorch_cpu": "CPU",
+  "onnx_cpu": "CPU",
+  "openvino_cpu": "CPU",
+  "openvino_gpu": "GPU",
+  "tensorrt_gpu": "GPU"
+ },
+ "backends": {
+  "pytorch_gpu": {
+   "640": 26.822407500003465,
+   "416": 24.861142499867128
+  },
+  "pytorch_cpu": {
+   "640": 257.414830000198,
+   "416": 128.3623199997237
+  },
+  "onnx_cpu": {
+   "640": 696.1737675002951,
+   "416": 398.8904574995104
+  },
+  "openvino_cpu": {
+   "640": 50.17752999992808,
+   "416": 27.467280000564642
+  },
+  "openvino_gpu": {
+   "640": 37.35605499969097,
+   "416": 35.44262499999604
+  },
+  "tensorrt_gpu": {
+   "640": 12.763704999815673,
+   "416": 11.013590000220574
+  }
+ },
+ "parity": {
+  "pytorch_gpu": {
+   "ref_boxes": 155,
+   "boxes": 155,
+   "matched": 155,
+   "match_pct": 100.0,
+   "max_conf_delta": 0.0793226957321167,
+   "count_equal_images": 40
+  },
+  "onnx_cpu": {
+   "ref_boxes": 155,
+   "boxes": 155,
+   "matched": 155,
+   "match_pct": 100.0,
+   "max_conf_delta": 0.00021201372146606445,
+   "count_equal_images": 40
+  },
+  "openvino_cpu": {
+   "ref_boxes": 155,
+   "boxes": 155,
+   "matched": 155,
+   "match_pct": 100.0,
+   "max_conf_delta": 0.0003014206886291504,
+   "count_equal_images": 40
+  },
+  "openvino_gpu": {
+   "ref_boxes": 155,
+   "boxes": 155,
+   "matched": 155,
+   "match_pct": 100.0,
+   "max_conf_delta": 0.0003185272216796875,
+   "count_equal_images": 40
+  },
+  "tensorrt_gpu": {
+   "ref_boxes": 155,
+   "boxes": 155,
+   "matched": 155,
+   "match_pct": 100.0,
+   "max_conf_delta": 0.09804809093475342,
+   "count_equal_images": 40
+  }
+ },
+ "artifacts": {
+  "onnx_640": "D:\\ML\\person-counter\\reports\\eval\\backends\\onnx_640.onnx",
+  "onnx_416": "D:\\ML\\person-counter\\reports\\eval\\backends\\onnx_416.onnx",
+  "openvino_640": "D:\\ML\\person-counter\\reports\\eval\\backends\\ov_640\\best_openvino_model",
+  "openvino_416": "D:\\ML\\person-counter\\reports\\eval\\backends\\ov_416\\best_openvino_model",
+  "engine_640": "D:\\ML\\person-counter\\reports\\eval\\backends\\engine_640.engine",
+  "engine_416": "D:\\ML\\person-counter\\reports\\eval\\backends\\engine_416.engine"
+ }
+}

@@ -1,0 +1,70 @@
+# ---------------------------------------------------------------------------
+# Datasets and source archives -- 2.4 GB, rebuildable with tools/
+# See README.md for how to restore data/ from the source export.
+# ---------------------------------------------------------------------------
+archieved_dataset/
+data/raw/
+data/video/
+data/store/
+data/merged/
+data/cctv-person/images/
+data/cctv-person/yolo/images/
+data/cctv-person/yolo/labels/
+
+# Kept on purpose (do not add to the rules above):
+#   data/cctv-person/annotations/*.json   COCO ground truth
+#   data/cctv-person/manifest.csv         per-photo scene/split table
+#   data/cctv-person/yolo/*.yaml          dataset configs
+
+# ---------------------------------------------------------------------------
+# Model weights and compiled graphs -- published as GitHub Release assets
+# ---------------------------------------------------------------------------
+*.pt
+*.onnx
+*.engine
+*.bin
+*.xml
+*_openvino_model/
+models/
+runs/person/*/weights/
+runs/person/*/trt*/
+reports/eval/backends/
+
+# ---------------------------------------------------------------------------
+# Rendered video
+# ---------------------------------------------------------------------------
+*.mp4
+*.avi
+*.mkv
+*.webm
+
+# ---------------------------------------------------------------------------
+# Stray downloads
+# ---------------------------------------------------------------------------
+vt5c8h6kmh-1.zip
+yolo26n.pt
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# OS / editor
+# ---------------------------------------------------------------------------
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# ---------------------------------------------------------------------------
+# Local agent notes
+# ---------------------------------------------------------------------------
+CLAUDE.md
+.claude/

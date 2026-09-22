@@ -1,0 +1,99 @@
+{
+ "images": 4886,
+ "boxes": 18659,
+ "density_mean": 3.8188702415063447,
+ "density_hist": [
+  1407,
+  1477,
+  936,
+  602,
+  234,
+  130,
+  41,
+  15,
+  4,
+  4,
+  0,
+  1,
+  2,
+  7,
+  26
+ ],
+ "empty_images": 0,
+ "boxh_hist": [
+  611,
+  2368,
+  2463,
+  2202,
+  2571,
+  2247,
+  1543,
+  1082,
+  955,
+  620,
+  401,
+  434,
+  270,
+  180,
+  134,
+  144,
+  109,
+  82,
+  75,
+  168
+ ],
+ "boxh_median_px": 149.0,
+ "splits": {
+  "train": 3908,
+  "test": 489,
+  "val": 489
+ },
+ "boxes_per_split": {
+  "train": 13701,
+  "val": 2386,
+  "test": 2572
+ },
+ "scenes": 1598,
+ "copies_hist": {
+  "1": 1964,
+  "2": 1563,
+  "3": 829,
+  "4": 332,
+  "5": 118,
+  "6": 39,
+  "7": 20,
+  "8": 11,
+  "9": 5,
+  "10": 5
+ },
+ "audit": {
+  "files": 10062,
+  "stems": 3175,
+  "stems_multi_photo": 1507,
+  "distinct_photos": 4886,
+  "photos_with_copies": 2922,
+  "photos_leaking": 1651,
+  "files_in_leaking_photos": 5003,
+  "threshold": 0.97
+ },
+ "families": {
+  "belum teridentifikasi": 1362,
+  "jalan / parkiran": 1004,
+  "koridor / lobi": 820,
+  "toko / gudang / kantor": 727,
+  "kampus": 237,
+  "jalan raya": 200,
+  "pintu masuk": 142,
+  "webcam / selfie": 140,
+  "kantor / lab": 139,
+  "lobi / pintu masuk": 67,
+  "taman": 48
+ },
+ "domain_kind": {
+  "indoor": 1753,
+  "outdoor": 1489,
+  "unknown": 1362,
+  "semi": 142,
+  "bukan-cctv": 140
+ }
+}

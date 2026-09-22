@@ -1,0 +1,9 @@
+# Indoor-only training set; val and test stay identical to data.yaml
+# so the indoor run is directly comparable to the others.
+path: D:/ML/person-counter/data/cctv-person/yolo
+train: train_indoor.txt
+val: images/val
+test: images/test
+
+nc: 1
+names: [person]

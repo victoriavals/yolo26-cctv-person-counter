@@ -1,0 +1,14 @@
+{
+ "run": "smoke",
+ "seconds": 67.1,
+ "overrides": {
+  "name": "smoke",
+  "epochs": 2,
+  "fraction": 0.08,
+  "patience": 2,
+  "cache": false,
+  "plots": false
+ },
+ "model": "D:/ML/person-counter/models/yolo26s.pt",
+ "weights": "D:\\ML\\person-counter\\runs\\person\\smoke/weights/best.pt"
+}

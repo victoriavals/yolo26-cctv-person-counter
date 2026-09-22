@@ -1,0 +1,9 @@
+# CCTV-person, sudah dibersihkan: dedup per foto, split per-scene, satu kelas.
+# Ganti `path` kalau folder ini dipindah.
+path: D:/ML/person-counter/data/cctv-person/yolo
+train: images/train
+val: images/val
+test: images/test
+
+nc: 1
+names: [person]

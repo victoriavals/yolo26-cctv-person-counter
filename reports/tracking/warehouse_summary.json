@@ -1,0 +1,21 @@
+{
+ "source": "D:/ML/lozy-warehouse/local-video-inference/uploads/test-1.mp4",
+ "weights": "D:\\ML\\person-counter\\runs\\person\\default\\weights\\best.pt",
+ "tracker": "bytetrack.yaml",
+ "conf": 0.25,
+ "frames": 900,
+ "fps_video": 15,
+ "detik_diproses": 60.0,
+ "waktu_proses_detik": 43.1,
+ "fps_proses": 20.9,
+ "occupancy": {
+  "mean": 2.352222222222222,
+  "median": 2.0,
+  "max": 6,
+  "min": 0
+ },
+ "track_unik": 40,
+ "garis_masuk": 1,
+ "garis_keluar": 1,
+ "garis": "0,0.62,1,0.62"
+}

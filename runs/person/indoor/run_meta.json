@@ -1,0 +1,17 @@
+{
+ "run": "indoor",
+ "seconds": 2379.9,
+ "overrides": {
+  "name": "indoor",
+  "data": "D:/ML/person-counter/data/cctv-person/yolo/data_indoor.yaml",
+  "hsv_v": 0.15,
+  "hsv_s": 0.4,
+  "scale": 0.3,
+  "degrees": 0.0,
+  "mosaic": 1.0,
+  "close_mosaic": 20,
+  "fliplr": 0.5
+ },
+ "model": "D:/ML/person-counter/models/yolo26s.pt",
+ "weights": "D:\\ML\\person-counter\\runs\\person\\indoor/weights/best.pt"
+}

@@ -1,0 +1,31 @@
+{
+ "run": "default",
+ "weights": "D:\\ML\\person-counter\\runs\\person\\default\\weights\\best.pt",
+ "conf": 0.25,
+ "n_images": 30,
+ "onnx": "D:\\ML\\person-counter\\runs\\person\\default\\weights\\best.onnx",
+ "onnx_mb": 38.2,
+ "parity": {
+  "pytorch_boxes": 145,
+  "onnx_boxes": 145,
+  "matched": 145,
+  "match_pct": 100.0,
+  "max_conf_delta": 3.3974647521972656e-05,
+  "count_equal_images": 30,
+  "images": 30
+ },
+ "speed": {
+  "pytorch_gpu": {
+   "ms_per_frame": 25.99186000006739,
+   "fps": 38.47358365262845
+  },
+  "pytorch_cpu": {
+   "ms_per_frame": 253.7599966667282,
+   "fps": 3.9407314515113847
+  },
+  "onnx_cpu": {
+   "ms_per_frame": 716.4999666662576,
+   "fps": 1.3956734773524355
+  }
+ }
+}

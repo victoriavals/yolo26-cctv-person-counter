@@ -1,0 +1,21 @@
+{
+ "source": "D:/ML/person-counter/data/video/people-walking.mp4",
+ "weights": "runs/person/default/weights/best.engine",
+ "tracker": "bytetrack.yaml",
+ "conf": 0.25,
+ "frames": 1093,
+ "fps_video": 23,
+ "detik_diproses": 47.5,
+ "waktu_proses_detik": 70.4,
+ "fps_proses": 15.5,
+ "occupancy": {
+  "mean": 4.200365965233303,
+  "median": 4.0,
+  "max": 13,
+  "min": 0
+ },
+ "track_unik": 117,
+ "garis_masuk": 8,
+ "garis_keluar": 15,
+ "garis": "0.5,0,0.5,1"
+}
