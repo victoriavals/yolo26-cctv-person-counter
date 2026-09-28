@@ -68,3 +68,9 @@ desktop.ini
 # ---------------------------------------------------------------------------
 CLAUDE.md
 .claude/
+
+# ---------------------------------------------------------------------------
+# Unpublished journal manuscript -- kept out of this public repo until the
+# paper is published (a pushed draft would show up in similarity checks)
+# ---------------------------------------------------------------------------
+jurnal/
