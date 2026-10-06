@@ -47,10 +47,28 @@ metrics as JSON, every figure, and per-run training logs (`results.csv`, `args.y
 loss and PR curves).
 
 Not committed, because it totals ~3 GB: the images themselves, the source Roboflow
-archive, rendered tracking video, and all model weights and compiled graphs
-(`.pt` / `.onnx` / `.engine` / OpenVINO IR). Weights are published as GitHub Release
-assets instead. See [Rebuilding the dataset](#rebuilding-the-dataset) to regenerate
-`data/` from the source export.
+archive, rendered tracking video, and every model weight and compiled graph under
+`runs/` and `reports/` (`.pt` / `.onnx` / `.engine` / OpenVINO IR). See
+[Rebuilding the dataset](#rebuilding-the-dataset) to regenerate `data/` from the
+source export.
+
+The one exception is `weights/`, committed so a server can `git pull` and run the
+chosen model without retraining:
+
+```
+weights/best.pt                    the `default` run, 20 MB (source for any re-export)
+weights/best_openvino_model/       OpenVINO IR of it, exported at 640px, 38 MB
+weights/SHA256SUMS                 check with `cd weights && sha256sum -c SHA256SUMS`
+```
+
+Load the OpenVINO model with `YOLO("weights/best_openvino_model")` and call it with
+`imgsz=640, conf=0.25, device="intel:cpu"`. The size is baked into the graph: asking a
+640 graph for another `imgsz` silently runs at 640. Pin `intel:cpu` rather than
+`cpu`, which OpenVINO may route to `AUTO`. Set `os.environ["YOLO_AUTOINSTALL"] =
+"False"` before importing Ultralytics so a missing runtime fails loudly instead of
+being pip-installed. Retraining `default` does **not** update `weights/`: copy
+`best.pt` in, re-export at 640 and refresh `SHA256SUMS` by hand. Each refresh adds
+about 58 MB to the history permanently, so do it per model you actually ship.
 
 ```
 data/cctv-person/
@@ -77,7 +95,7 @@ signed mean error, `+-1` the share of frames counted within one person.
 | tuned | 0.20 | 0.873 | 0.581 | 0.659 | -0.10 | 85.7% | 0.853 | 0.832 |
 | indoor-only | 0.15 | 0.679 | 0.341 | 1.322 | -0.86 | 68.2% | 0.800 | 0.622 |
 
-Use `runs/person/default/weights/best.pt` at `conf=0.25`.
+Use `runs/person/default/weights/best.pt` at `conf=0.25` (committed copy: `weights/best.pt`).
 
 **Where the gain came from.** The COCO baseline was weakest in exactly the deployment
 domain: indoor mAP50 0.551 against outdoor 0.792. After fine-tuning the gap closes to
