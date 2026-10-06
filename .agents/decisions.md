@@ -477,6 +477,32 @@ galleries, `rhc_preview.png`), which contradicts the stated reason; see
 
 Alternative Considered: Git LFS (not used).
 
+## Commit the chosen model and its 640px OpenVINO export in `weights/`
+
+Date: 2026-10-03, at the user's request
+
+Context: The decision above said weights would go out as GitHub Release assets. No
+release was ever made, so the chosen model existed on one machine only, and a server
+could not get it with `git pull`.
+
+Decision: Commit `weights/best.pt` (the `default` run, 20 MB),
+`weights/best_openvino_model/` (exported at 640px, 38 MB) and `weights/SHA256SUMS`.
+`.gitignore` re-includes `weights/` after the weight rules; `.gitattributes` marks
+`weights/**` binary so no line-ending conversion touches the files. Every other weight
+and export stays ignored.
+
+Reason: A deploy becomes `git pull`, and OpenVINO is the CPU backend measured here. Both
+files are under GitHub's 50 MB warning, so plain git works without LFS. It is also the
+model's first copy off this machine.
+
+Impact: The weights are public with the repo. Each refreshed model adds about 58 MB to
+the history for good. Retraining does not update `weights/`: copy `best.pt` in,
+re-export at 640 and refresh `SHA256SUMS` by hand. The 416px exports and the TensorRT
+engine (tied to the GPU and TensorRT version that built it) are not committed.
+
+Alternative Considered: Git LFS (the server would need git-lfs, and LFS bandwidth is
+metered); GitHub Release assets (a separate download step, not `git pull`).
+
 ## Serve reports over HTTP on localhost, with Range support
 
 Date: 2026-09-18 (`tools/serve_reports.py`); port-forwarding confirmed 2026-09-22
