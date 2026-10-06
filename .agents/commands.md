@@ -45,7 +45,7 @@ Files the code needs that git does not contain:
 |---|---|
 | `archieved_dataset/<Roboflow export>.coco.zip` | the Roboflow project export |
 | `models/yolo26s.pt` (20.4 MB) | the official pretrained YOLO26s checkpoint |
-| `runs/person/default/weights/best.pt` | meant to be a GitHub Release asset; whether one exists: Unknown - information not available in repository |
+| `runs/person/default/weights/best.pt` | committed copy in `weights/best.pt`, with its 640px OpenVINO export in `weights/best_openvino_model/` (since 2026-10-03) |
 
 Restore the raw data. `unzip -d` does not create nested parents, so create the
 folder first:
