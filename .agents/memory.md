@@ -64,7 +64,8 @@ These are the facts most likely to cost an agent hours if missed.
    (15 -> 15 detections). The cause is **seated and table-occluded people**, a shape
    missing from the training data. A test-split mAP50 of 0.891 did not predict this.
 2. **The model to use** is `runs/person/default/weights/best.pt` at `conf=0.25`,
-   `imgsz=640`. It is not in git; it is meant to be published as a GitHub Release asset.
+   `imgsz=640`. A copy is committed as `weights/best.pt`, with its 640px OpenVINO
+   export in `weights/best_openvino_model/` (since 2026-10-03; see the README).
 3. **The exports next to that model are 416px, not 640px.** `weights/best.engine`,
    `weights/best.onnx` and `weights/best_openvino_model/` were left there by
    `tools/benchmark_backends.py`, which exports every size beside the weights and
