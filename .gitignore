@@ -17,7 +17,8 @@ data/cctv-person/yolo/labels/
 #   data/cctv-person/yolo/*.yaml          dataset configs
 
 # ---------------------------------------------------------------------------
-# Model weights and compiled graphs -- published as GitHub Release assets
+# Model weights and compiled graphs -- ignored everywhere EXCEPT weights/,
+# which holds the one deployable copy (see the exception right below)
 # ---------------------------------------------------------------------------
 *.pt
 *.onnx
@@ -29,6 +30,13 @@ models/
 runs/person/*/weights/
 runs/person/*/trt*/
 reports/eval/backends/
+
+# The chosen model, committed on purpose so a server can `git pull` and run it:
+# weights/best.pt plus its 640px OpenVINO export. Must stay AFTER the rules
+# above -- the last matching pattern wins. Never put a TensorRT .engine here:
+# it only runs on the GPU and TensorRT version that built it.
+!weights/
+!weights/**
 
 # ---------------------------------------------------------------------------
 # Rendered video
