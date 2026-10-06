@@ -156,7 +156,7 @@ A size baked into the graph wins over the `imgsz=` argument, without any warning
 | ONNX Runtime | CPU inference (measured, not recommended) | `export.py`, the benchmark scripts |
 | supervision, lap | Video metadata, `LineZone`, drawing; ByteTrack and BoT-SORT association | `count_people.py` |
 | pycocotools | Reference mAP | `evaluate.py` |
-| GitHub | Code remote. Weights are meant to go out as Release assets; whether any release exists: Unknown - information not available in repository | `.gitignore`, `README.md` |
+| GitHub | Code remote. No Release was ever made; the chosen model and its 640px OpenVINO export are committed in `weights/` instead (since 2026-10-03) | `.gitignore`, `README.md` |
 | claude.ai Artifacts | Published copies of the two report pages | URLs in `CLAUDE.md` |
 | YouTube, via yt-dlp | One test clip, `data/video/people-walking.mp4` (listed as "Free Stock Footage For Commercial Projects") | downloaded by hand; no tool depends on it except `compare_backends_video.py` |
 
