@@ -1,0 +1,84 @@
+# ---------------------------------------------------------------------------
+# Datasets and source archives -- 2.4 GB, rebuildable with tools/
+# See README.md for how to restore data/ from the source export.
+# ---------------------------------------------------------------------------
+archieved_dataset/
+data/raw/
+data/video/
+data/store/
+data/merged/
+data/cctv-person/images/
+data/cctv-person/yolo/images/
+data/cctv-person/yolo/labels/
+
+# Kept on purpose (do not add to the rules above):
+#   data/cctv-person/annotations/*.json   COCO ground truth
+#   data/cctv-person/manifest.csv         per-photo scene/split table
+#   data/cctv-person/yolo/*.yaml          dataset configs
+
+# ---------------------------------------------------------------------------
+# Model weights and compiled graphs -- ignored everywhere EXCEPT weights/,
+# which holds the one deployable copy (see the exception right below)
+# ---------------------------------------------------------------------------
+*.pt
+*.onnx
+*.engine
+*.bin
+*.xml
+*_openvino_model/
+models/
+runs/person/*/weights/
+runs/person/*/trt*/
+reports/eval/backends/
+
+# The chosen model, committed on purpose so a server can `git pull` and run it:
+# weights/best.pt plus its 640px OpenVINO export. Must stay AFTER the rules
+# above -- the last matching pattern wins. Never put a TensorRT .engine here:
+# it only runs on the GPU and TensorRT version that built it.
+!weights/
+!weights/**
+
+# ---------------------------------------------------------------------------
+# Rendered video
+# ---------------------------------------------------------------------------
+*.mp4
+*.avi
+*.mkv
+*.webm
+
+# ---------------------------------------------------------------------------
+# Stray downloads
+# ---------------------------------------------------------------------------
+vt5c8h6kmh-1.zip
+yolo26n.pt
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------------------
+# OS / editor
+# ---------------------------------------------------------------------------
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# ---------------------------------------------------------------------------
+# Local agent notes
+# ---------------------------------------------------------------------------
+CLAUDE.md
+.claude/
+
+# ---------------------------------------------------------------------------
+# Unpublished journal manuscript -- kept out of this public repo until the
+# paper is published (a pushed draft would show up in similarity checks)
+# ---------------------------------------------------------------------------
+jurnal/
