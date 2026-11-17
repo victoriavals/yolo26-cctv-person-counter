@@ -1,0 +1,52 @@
+{
+  "status": "passed",
+  "checkedOn": "2026-11-16",
+  "timezone": "Asia/Jakarta",
+  "sourceFiles": 27,
+  "pythonModulesParsed": 16,
+  "htmlSourcesParsed": 4,
+  "yamlConfigurationsParsed": 2,
+  "jsonFilesParsed": 6,
+  "localizedTextPairsChecked": 115,
+  "mainVisuals": 7,
+  "previewVisuals": 7,
+  "unchangedChartPixelComparisons": 4,
+  "brokenDocumentationLinks": [],
+  "intentionallyOmittedLegacyHtmlReferences": 20,
+  "privacy": {
+    "textFilesScanned": 44,
+    "patternFindings": [],
+    "distinctReviewedUrls": 8,
+    "reviewedUrlHosts": [
+      "download.pytorch.org",
+      "fonts.googleapis.com",
+      "fonts.gstatic.com",
+      "github.com",
+      "www.w3.org"
+    ],
+    "method": {
+      "en": "Full text scan plus targeted manual inspection; all final images also reviewed visually. Pattern matching alone is not proof of image safety.",
+      "id": "Pemindaian teks penuh serta inspeksi manual terarah; seluruh gambar akhir juga ditinjau visual. Pencocokan pola saja bukan bukti keamanan gambar."
+    }
+  },
+  "originalTrackedFilesUnchanged": 167,
+  "originalTrackedWorkingTreeClean": true,
+  "sourceSnapshotCommit": "624a840b2de026585d7da4bd9bfeb5f92f8984fd",
+  "newTrainingRun": false,
+  "newVideoInferenceRun": false,
+  "newSingleFrameInferenceRun": true,
+  "repositoryAutomatedTestSuiteRun": false,
+  "codeCoverageMeasured": false,
+  "cachedPredictionOutputsRecomputed": 7,
+  "modelChecksumEntriesVerified": 4,
+  "focusedSyntheticAndSourceChecks": [
+    "shared-invalid-tracker-id",
+    "installed-auto-optimizer",
+    "store-time-block-rounding"
+  ],
+  "visualReview": "awaiting-final-main-and-preview-attestation",
+  "distributionScope": {
+    "en": "Reviewed custom-code and documentation handoff with aggregate charts and one privacy-redacted frame included at the user's explicit direction; full dataset, raw media and models are excluded. The upstream image license remains undefined.",
+    "id": "Handoff kode custom dan dokumentasi yang ditinjau dengan grafik agregat serta satu frame dengan redaksi privasi yang disertakan atas instruksi eksplisit pengguna; dataset lengkap, media mentah, dan model dikeluarkan. Lisensi gambar upstream tetap belum ditentukan."
+  }
+}
