@@ -1,0 +1,384 @@
+{
+  "schemaVersion": "1.0",
+  "assets": [
+    {
+      "id": "asset-01",
+      "path": "assets/01-person-counter-pipeline.webp",
+      "width": 1600,
+      "height": 1000,
+      "bytes": 30396,
+      "sha256": "a9371cb4be90a64ffd188ef2ff465fa19656a6cc35a5befef0deee98117b6c20",
+      "preview": {
+        "path": "assets/01-person-counter-pipeline-preview.webp",
+        "width": 800,
+        "height": 500,
+        "bytes": 49838,
+        "sha256": "4b8d1f80bc72f0dd28354e9aa8b5b4f218701ae480768d2b43918669a65bba18"
+      },
+      "visualType": "architecture-diagram",
+      "order": 1,
+      "fit": "cover",
+      "detailFit": "contain",
+      "cardAspectRatio": "8:5",
+      "imageTextLanguage": "en",
+      "alt": {
+        "en": "Two-stage diagram of model development and recorded-video counting with YOLO26s, ByteTrack, and LineZone.",
+        "id": "Diagram dua tahap pengembangan model dan counting rekaman video dengan YOLO26s, ByteTrack, dan LineZone."
+      },
+      "caption": {
+        "en": "Architecture illustration reconstructed from the reviewed code; it is not an application screenshot or an observed deployment.",
+        "id": "Ilustrasi arsitektur yang disusun dari kode yang ditinjau; bukan screenshot aplikasi atau deployment yang diamati."
+      },
+      "recommendedForInitialWebsite": true,
+      "provenance": {
+        "kind": "new-code-derived-diagram",
+        "sourcePaths": [
+          "tools/train.py",
+          "tools/evaluate.py",
+          "tools/count_people.py",
+          "tools/benchmark_backends.py"
+        ]
+      },
+      "coverReason": {
+        "en": "The 8:5 diagram explains the actual workflow and prototype status without redistributing identifiable footage or implying a web application.",
+        "id": "Diagram 8:5 menjelaskan alur nyata dan status prototipe tanpa mendistribusikan rekaman orang yang dapat dikenali atau menyiratkan aplikasi web."
+      },
+      "review": {
+        "status": "reviewed",
+        "metadataRemoved": true,
+        "containsPeople": false,
+        "containsQR": false,
+        "containsPersonalData": false,
+        "aiGenerated": false,
+        "distributionBasis": "owner-confirmed-project-chart-or-new-documentation-diagram",
+        "fullSizeVisualReview": true,
+        "previewVisualReview": true,
+        "reviewDate": "2026-11-16",
+        "reviewMethod": "Direct view_image inspection of full exported image and preview; edges, labels, footers, and privacy checked."
+      }
+    },
+    {
+      "id": "asset-02",
+      "path": "assets/02-domain-and-density-results.webp",
+      "width": 1680,
+      "height": 896,
+      "bytes": 16610,
+      "sha256": "8c422fa813ba3c4ce3c68f1c7d95da2a974bae976541febf8688a02d0204e007",
+      "preview": {
+        "path": "assets/02-domain-and-density-results-preview.webp",
+        "width": 800,
+        "height": 427,
+        "bytes": 31508,
+        "sha256": "5563c23198e20c9dfb1f8e9ddd290248b56ae71848cec1325214fcff1244a31c"
+      },
+      "visualType": "experiment-chart",
+      "order": 2,
+      "fit": "contain",
+      "detailFit": "contain",
+      "cardAspectRatio": "8:5",
+      "imageTextLanguage": "id-with-technical-labels",
+      "alt": {
+        "en": "Four charts compare detection mAP50 and counting MAE by domain and crowd-density group.",
+        "id": "Empat grafik membandingkan mAP50 deteksi dan MAE hitungan menurut domain dan kelompok kepadatan."
+      },
+      "caption": {
+        "en": "Historical test-split results for baseline, default, tuned, and indoor models. Dense groups with fewer than ten images were omitted by the original plot code.",
+        "id": "Hasil test historis untuk model baseline, default, tuned, dan indoor. Kelompok padat dengan kurang dari sepuluh gambar dilewati oleh kode grafik asli."
+      },
+      "recommendedForInitialWebsite": true,
+      "provenance": {
+        "kind": "existing-project-chart",
+        "repositoryPath": "reports/eval/figures/breakdown.png",
+        "originalSha256": "9addea881b9b7d7b6d6ce44904e985580108221373f757feee197d990948b22a"
+      },
+      "coverReason": null,
+      "review": {
+        "status": "reviewed",
+        "metadataRemoved": true,
+        "containsPeople": false,
+        "containsQR": false,
+        "containsPersonalData": false,
+        "aiGenerated": false,
+        "distributionBasis": "owner-confirmed-project-chart-or-new-documentation-diagram",
+        "fullSizeVisualReview": true,
+        "previewVisualReview": true,
+        "reviewDate": "2026-11-16",
+        "reviewMethod": "Direct view_image inspection of full exported image and preview; edges, labels, footers, and privacy checked."
+      }
+    },
+    {
+      "id": "asset-03",
+      "path": "assets/03-counting-predictions.webp",
+      "width": 2296,
+      "height": 560,
+      "bytes": 32750,
+      "sha256": "13cf91b053fab045be5600305814ed4e60bdde7f1b32483e447028238dd7b6bb",
+      "preview": {
+        "path": "assets/03-counting-predictions-preview.webp",
+        "width": 800,
+        "height": 195,
+        "bytes": 26800,
+        "sha256": "c2034f9ec75faa915a8bd177589de0adb3548be0636815d57d5d609be5f21c4c"
+      },
+      "visualType": "experiment-chart",
+      "order": 3,
+      "fit": "contain",
+      "detailFit": "contain",
+      "cardAspectRatio": "8:5",
+      "imageTextLanguage": "id-with-technical-labels",
+      "alt": {
+        "en": "Four scatter plots compare predicted and ground-truth person counts, colored by indoor, outdoor, and unknown domains.",
+        "id": "Empat scatter plot membandingkan hitungan prediksi dan ground truth, dengan warna domain indoor, outdoor, dan unknown."
+      },
+      "caption": {
+        "en": "Historical cached test predictions on 475 images. The ±1 figure means an error of at most one person; it is not exact-count accuracy.",
+        "id": "Prediksi test historis tersimpan pada 475 gambar. Angka ±1 berarti galat paling banyak satu orang; bukan akurasi hitungan tepat."
+      },
+      "recommendedForInitialWebsite": false,
+      "provenance": {
+        "kind": "existing-project-chart",
+        "repositoryPath": "reports/eval/figures/scatter.png",
+        "originalSha256": "f3e96f4bbe4ed7ff896becf63f5b17993d68e35ecd2cb88c5c83c18c41a08571"
+      },
+      "coverReason": null,
+      "review": {
+        "status": "reviewed",
+        "metadataRemoved": true,
+        "containsPeople": false,
+        "containsQR": false,
+        "containsPersonalData": false,
+        "aiGenerated": false,
+        "distributionBasis": "owner-confirmed-project-chart-or-new-documentation-diagram",
+        "fullSizeVisualReview": true,
+        "previewVisualReview": true,
+        "reviewDate": "2026-11-16",
+        "reviewMethod": "Direct view_image inspection of full exported image and preview; edges, labels, footers, and privacy checked."
+      }
+    },
+    {
+      "id": "asset-04",
+      "path": "assets/04-confidence-threshold-sweep.webp",
+      "width": 1540,
+      "height": 532,
+      "bytes": 44110,
+      "sha256": "67834f1d3fdf64e95cfb984c78550ef0b0619a669f14dad9786c6774b2c278f9",
+      "preview": {
+        "path": "assets/04-confidence-threshold-sweep-preview.webp",
+        "width": 800,
+        "height": 276,
+        "bytes": 43402,
+        "sha256": "eda2481bfda57c7850eb34d400413bdc204a394e3f4e70f21069ba3634f2d33e"
+      },
+      "visualType": "experiment-chart",
+      "order": 4,
+      "fit": "contain",
+      "detailFit": "contain",
+      "cardAspectRatio": "8:5",
+      "imageTextLanguage": "id-with-technical-labels",
+      "alt": {
+        "en": "Line charts show counting MAE and F1 across confidence thresholds for four model variants.",
+        "id": "Grafik garis menunjukkan MAE hitungan dan F1 pada berbagai confidence untuk empat varian model."
+      },
+      "caption": {
+        "en": "Historical confidence sweep selected on the evaluated test split. It is exploratory tuning, not an untouched-test estimate at a validation-selected threshold.",
+        "id": "Sweep confidence historis dipilih pada split test yang dievaluasi. Ini tuning eksploratif, bukan estimasi test murni dengan threshold yang dipilih pada validation."
+      },
+      "recommendedForInitialWebsite": false,
+      "provenance": {
+        "kind": "existing-project-chart",
+        "repositoryPath": "reports/eval/figures/sweep.png",
+        "originalSha256": "a167a9d333766dc9f7ac535e3facd215713bd138fda84eb797a3612751827322"
+      },
+      "coverReason": null,
+      "review": {
+        "status": "reviewed",
+        "metadataRemoved": true,
+        "containsPeople": false,
+        "containsQR": false,
+        "containsPersonalData": false,
+        "aiGenerated": false,
+        "distributionBasis": "owner-confirmed-project-chart-or-new-documentation-diagram",
+        "fullSizeVisualReview": true,
+        "previewVisualReview": true,
+        "reviewDate": "2026-11-16",
+        "reviewMethod": "Direct view_image inspection of full exported image and preview; edges, labels, footers, and privacy checked."
+      }
+    },
+    {
+      "id": "asset-05",
+      "path": "assets/05-inference-backend-benchmark.webp",
+      "width": 1800,
+      "height": 1000,
+      "bytes": 46578,
+      "sha256": "e4154dd00ee028a7865a4311b326749ff56a7ea24039a30359d64bb6faf2a908",
+      "preview": {
+        "path": "assets/05-inference-backend-benchmark-preview.webp",
+        "width": 800,
+        "height": 444,
+        "bytes": 44824,
+        "sha256": "a3b9e4469378aba1809ac39819f2f520b6a18be1de3f47cca02462586e3217cc"
+      },
+      "visualType": "benchmark-chart",
+      "order": 5,
+      "fit": "contain",
+      "detailFit": "contain",
+      "cardAspectRatio": "8:5",
+      "imageTextLanguage": "en",
+      "alt": {
+        "en": "Two horizontal-bar panels compare local prediction latency and throughput across six CPU and GPU backends at 640 and 416 pixels.",
+        "id": "Dua panel batang horizontal membandingkan latensi prediksi lokal dan throughput pada enam backend CPU dan GPU pada 640 serta 416 piksel."
+      },
+      "caption": {
+        "en": "Re-rendered from the historical benchmark for legibility; no new timing was measured. The i5-13400F / RTX 4060 Ti results cover prediction calls on 40 images. The 155/155 sampled box match at 640 pixels is not universal; crowded-video caches differ. Tracking and video encoding are excluded from FPS.",
+        "id": "Dirender ulang dari benchmark historis agar terbaca; tidak ada pengukuran waktu baru. Hasil i5-13400F / RTX 4060 Ti mencakup pemanggilan prediksi pada 40 gambar. Kecocokan kotak sampel 155/155 pada 640 piksel tidak bersifat universal; cache video ramai berbeda. Tracking dan encoding video tidak tercakup dalam FPS."
+      },
+      "recommendedForInitialWebsite": true,
+      "provenance": {
+        "kind": "re-rendered-historical-project-benchmark",
+        "repositoryPath": "reports/eval/backends_default.json",
+        "originalSha256": "3bfae85194e1ffa67cebd498536c11c70244642e325057e1f304bca758c43f14",
+        "reason": {
+          "en": "The original adjacent bar labels overlapped and sample limits were only supplied outside the image. Numerical measurements are unchanged.",
+          "id": "Label batang berdekatan pada gambar asli bertumpuk dan batas sampel hanya dijelaskan di luar gambar. Angka pengukuran tidak diubah."
+        }
+      },
+      "coverReason": null,
+      "review": {
+        "status": "reviewed",
+        "metadataRemoved": true,
+        "containsPeople": false,
+        "containsQR": false,
+        "containsPersonalData": false,
+        "aiGenerated": false,
+        "distributionBasis": "owner-confirmed-project-chart-or-new-documentation-diagram",
+        "fullSizeVisualReview": true,
+        "previewVisualReview": true,
+        "reviewDate": "2026-11-16",
+        "reviewMethod": "Direct view_image inspection of full exported image and preview; edges, labels, footers, and privacy checked."
+      }
+    },
+    {
+      "id": "asset-06",
+      "path": "assets/06-training-curves.webp",
+      "width": 1820,
+      "height": 504,
+      "bytes": 52694,
+      "sha256": "362c996c98a13b2d6dafa11d8688bd1074a2a982b0c1c116c5f118dfccc7f1c1",
+      "preview": {
+        "path": "assets/06-training-curves-preview.webp",
+        "width": 800,
+        "height": 222,
+        "bytes": 38968,
+        "sha256": "e74205c3f3b73542830e17e5971c6d855410c24b4c51147a5833048c1927db10"
+      },
+      "visualType": "training-chart",
+      "order": 6,
+      "fit": "contain",
+      "detailFit": "contain",
+      "cardAspectRatio": "8:5",
+      "imageTextLanguage": "id-with-technical-labels",
+      "alt": {
+        "en": "Training box-loss and validation mAP curves compare default, tuned, and indoor fine-tuning experiments.",
+        "id": "Kurva box loss training dan mAP validation membandingkan eksperimen fine-tuning default, tuned, dan indoor."
+      },
+      "caption": {
+        "en": "Historical run logs: default recorded 131 epochs, tuned 150, and indoor 80. These curves were not produced by a new training run during portfolio preparation.",
+        "id": "Log run historis: default mencatat 131 epoch, tuned 150, dan indoor 80. Kurva ini tidak dihasilkan oleh training baru saat penyiapan portfolio."
+      },
+      "recommendedForInitialWebsite": false,
+      "provenance": {
+        "kind": "existing-project-chart",
+        "repositoryPath": "reports/eval/figures/curves.png",
+        "originalSha256": "dfb66fab1531c1884ad6483f14734a25656d5b55bb1b0ab35b02b66a35ca46e5"
+      },
+      "coverReason": null,
+      "review": {
+        "status": "reviewed",
+        "metadataRemoved": true,
+        "containsPeople": false,
+        "containsQR": false,
+        "containsPersonalData": false,
+        "aiGenerated": false,
+        "distributionBasis": "owner-confirmed-project-chart-or-new-documentation-diagram",
+        "fullSizeVisualReview": true,
+        "previewVisualReview": true,
+        "reviewDate": "2026-11-16",
+        "reviewMethod": "Direct view_image inspection of full exported image and preview; edges, labels, footers, and privacy checked."
+      }
+    },
+    {
+      "id": "asset-07",
+      "path": "assets/07-single-frame-person-detection.webp",
+      "width": 640,
+      "height": 714,
+      "bytes": 291862,
+      "sha256": "6ae7ae7ae6a08c4cad1e849f094d341748695567d3ce79e2f56f8a290c76c964",
+      "preview": {
+        "path": "assets/07-single-frame-person-detection-preview.webp",
+        "width": 480,
+        "height": 536,
+        "bytes": 229406,
+        "sha256": "c855e8a175a1d66b1ec1239c33f7b4c15dcf303b4bfec69e39a506ea5edd33dc"
+      },
+      "visualType": "observed-model-inference-frame",
+      "order": 7,
+      "fit": "contain",
+      "detailFit": "contain",
+      "cardAspectRatio": "8:5",
+      "imageTextLanguage": "en",
+      "alt": {
+        "en": "One CCTV frame with four blue person detection boxes and confidence labels; a visible facial profile and camera text are covered while three back-of-head views remain visible.",
+        "id": "Satu frame CCTV dengan empat kotak deteksi orang biru dan label confidence; satu profil wajah yang terlihat dan teks kamera ditutup sementara tiga tampilan belakang kepala tetap terlihat."
+      },
+      "caption": {
+        "en": "Actual local YOLO26s inference returned 4 person detections in one selected dataset frame at image size 640 and confidence threshold 0.25 on CPU. Blue labels are returned confidence scores. One visible facial profile and camera text are redacted; back-of-head views are retained. This still image does not demonstrate tracking, unique visitors, or entry/exit accuracy.",
+        "id": "Inferensi YOLO26s lokal sebenarnya menghasilkan 4 deteksi orang pada satu frame dataset terpilih dengan ukuran gambar 640 dan confidence threshold 0,25 di CPU. Label biru adalah skor confidence yang dikembalikan model. Satu profil wajah yang terlihat dan teks kamera ditutup; tampilan belakang kepala dipertahankan. Gambar diam ini tidak membuktikan tracking, pengunjung unik, atau akurasi masuk/keluar."
+      },
+      "recommendedForInitialWebsite": true,
+      "coverReason": null,
+      "provenance": {
+        "kind": "observed-single-frame-inference",
+        "modelWeightsSha256": "2c91ca8de463b1d0613dbf264ca2038e5e41badfa561c0bd826e10440cdb6425",
+        "sourceFrameSha256": "997ca0a29f4a4a9e6b33144e4d09c8a5f2943fe6d1ac5d0ed346d283bb735e2a",
+        "sourceSplit": "test",
+        "evidencePath": "technical/person-counter-example-evidence.json",
+        "newTimingBenchmark": false
+      },
+      "publication": {
+        "userExplicitlyRequestedInPublicZip": true,
+        "instructionDate": "2026-11-16",
+        "upstreamDatasetLicense": "undefined",
+        "upstreamRightsIndependentlyVerified": false,
+        "scope": {
+          "en": "Only this privacy-redacted example frame is included at the user's explicit direction; no general dataset or model redistribution clearance is inferred.",
+          "id": "Hanya frame contoh dengan redaksi privasi ini yang disertakan atas instruksi eksplisit pengguna; tidak disimpulkan adanya izin distribusi umum untuk dataset atau model."
+        }
+      },
+      "review": {
+        "status": "reviewed",
+        "metadataRemoved": true,
+        "containsPeople": true,
+        "containsQR": false,
+        "containsPersonalData": false,
+        "visibleFacialProfilesRedacted": 1,
+        "backOfHeadViewsRetained": 3,
+        "aiGenerated": false,
+        "distributionBasis": "specific-user-directed-frame-inclusion-upstream-license-undefined",
+        "fullSizeVisualReview": true,
+        "previewVisualReview": true,
+        "reviewDate": "2026-11-16",
+        "reviewMethod": "Direct full-size and preview inspection; one visible facial profile and camera text masked, three back-of-head views retained."
+      }
+    }
+  ],
+  "recommendedWebsiteAssets": [
+    "asset-01",
+    "asset-07",
+    "asset-02",
+    "asset-05"
+  ],
+  "curationNote": {
+    "en": "Use the pipeline cover, single-frame model example, domain/density results, and backend benchmark initially. Keep all captions and use contain for the frame and charts.",
+    "id": "Gunakan sampul pipeline, contoh model satu frame, hasil domain/kepadatan, dan benchmark backend terlebih dahulu. Pertahankan semua caption dan gunakan contain untuk frame serta grafik."
+  }
+}
