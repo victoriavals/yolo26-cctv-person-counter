@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perbandingan Backend</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#0d0d0f; color:#e8e8ea;
+         font:14px/1.55 system-ui,-apple-system,Segoe UI,sans-serif; padding:20px 16px 48px; }
+  .wrap { max-width:1320px; margin:0 auto; }
+  h1 { font-size:19px; margin:0 0 2px; font-weight:650; letter-spacing:-.01em; }
+  p.sub { margin:0 0 20px; color:#8b8b93; font-size:13px; }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  button { background:#1b1b1f; color:#c9c9d1; border:1px solid #2c2c33; border-radius:7px;
+           padding:8px 15px; font:inherit; font-size:13px; cursor:pointer; }
+  button:hover { background:#24242a; }
+  button[aria-selected="true"] { background:#2f5fa8; border-color:#3f74c4; color:#fff; }
+  video { width:100%; background:#000; border-radius:8px; display:block; border:1px solid #23232a; }
+  .pane { display:none; }
+  .pane.on { display:block; }
+  .note { margin:10px 0 0; color:#8b8b93; font-size:13px; }
+  table { border-collapse:collapse; margin-top:26px; font-size:13px; width:100%; }
+  th { text-align:left; font-weight:600; color:#8b8b93; padding:7px 12px 7px 0;
+       border-bottom:1px solid #2c2c33; font-size:12px; text-transform:uppercase;
+       letter-spacing:.04em; }
+  td { padding:7px 12px 7px 0; border-bottom:1px solid #1c1c22; }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; }
+  tr.best td { color:#7fe08a; font-weight:600; }
+  .grp { color:#8b8b93; font-size:12px; padding-top:16px; text-transform:uppercase;
+         letter-spacing:.04em; }
+  a { color:#6ea8ff; }
+  .warn { margin-top:26px; padding:13px 15px; background:#1c1710; border:1px solid #4a3a1c;
+          border-radius:8px; font-size:13px; }
+  .warn b { color:#f0c674; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Perbandingan backend inferensi</h1>
+  <p class="sub">people-walking, frame 457&ndash;696 (10,0 detik, bagian terpadat &mdash; rata-rata 8,4 orang) &middot; YOLO26s 640px &middot; conf 0,25</p>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true"  data-p="cpu_race">CPU &mdash; balapan waktu nyata</button>
+    <button role="tab" aria-selected="false" data-p="cpu_sync">CPU &mdash; frame sinkron</button>
+    <button role="tab" aria-selected="false" data-p="gpu_race">GPU &mdash; balapan waktu nyata</button>
+    <button role="tab" aria-selected="false" data-p="gpu_sync">GPU &mdash; frame sinkron</button>
+  </div>
+
+  <div class="pane on" id="cpu_race">
+    <video controls muted loop playsinline preload="metadata" src="backends_cpu_race_h264.mp4"></video>
+    <p class="note">PyTorch &middot; ONNX &middot; OpenVINO. Tiap panel maju sesuai kecepatan aslinya, jadi OpenVINO menyelesaikan 240 frame dalam 12 detik sementara ONNX butuh 2 menit 46 detik. Durasi video ditentukan panel terlambat.</p>
+  </div>
+  <div class="pane" id="cpu_sync">
+    <video controls muted loop playsinline preload="metadata" src="backends_cpu_sync_h264.mp4"></video>
+    <p class="note">Ketiga panel pada frame yang sama, jadi selisih kotak yang terlihat murni selisih antar backend.</p>
+  </div>
+  <div class="pane" id="gpu_race">
+    <video controls muted loop playsinline preload="metadata" src="backends_gpu_race_h264.mp4"></video>
+    <p class="note">PyTorch &middot; OpenVINO &middot; TensorRT. ONNX tidak muncul di sini karena <code>onnxruntime</code> di mesin ini hanya punya <code>CPUExecutionProvider</code>.</p>
+  </div>
+  <div class="pane" id="gpu_sync">
+    <video controls muted loop playsinline preload="metadata" src="backends_gpu_sync_h264.mp4"></video>
+    <p class="note">Ketiga panel GPU pada frame yang sama.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Backend</th><th>Device</th><th class="n">ms/frame</th><th class="n">FPS</th><th class="n">Inferensi saja</th><th class="n">Total box</th></tr></thead>
+    <tbody>
+      <tr><td class="grp" colspan="6">CPU &mdash; Intel i5-13400F</td></tr>
+      <tr><td>ONNX</td><td>CPU</td><td class="n">689,7</td><td class="n">1,4</td><td class="n">661,1</td><td class="n">2156</td></tr>
+      <tr><td>PyTorch</td><td>CPU</td><td class="n">172,1</td><td class="n">5,8</td><td class="n">168,5</td><td class="n">2097</td></tr>
+      <tr class="best"><td>OpenVINO</td><td>intel:cpu</td><td class="n">49,2</td><td class="n">20,3</td><td class="n">44,3</td><td class="n">2156</td></tr>
+      <tr><td class="grp" colspan="6">GPU &mdash; NVIDIA RTX 4060 Ti</td></tr>
+      <tr><td>OpenVINO</td><td>intel:gpu</td><td class="n">35,2</td><td class="n">28,4</td><td class="n">29,7</td><td class="n">2156</td></tr>
+      <tr><td>PyTorch</td><td>cuda:0</td><td class="n">21,6</td><td class="n">46,4</td><td class="n">18,5</td><td class="n">2096</td></tr>
+      <tr class="best"><td>TensorRT</td><td>cuda:0</td><td class="n">8,6</td><td class="n">115,8</td><td class="n">4,0</td><td class="n">2153</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <b>Kolom &ldquo;total box&rdquo; tidak seragam, dan itu bukan derau.</b>
+    ONNX, OpenVINO CPU, dan OpenVINO GPU identik persis di <b>240/240 frame</b>. PyTorch CPU dan
+    PyTorch GPU sepakat di 237/240. Tapi PyTorch lawan backend hasil ekspor mana pun hanya cocok di
+    <b>151&ndash;154 dari 240 frame</b>. Ada dua keluarga, bukan satu. Ke-59 box yang ditemukan
+    OpenVINO tapi tidak oleh PyTorch luasnya sekitar separuh box biasa (median 1,01% frame lawan
+    1,96%) &mdash; jadi yang ditambahkan backend ekspor kebanyakan orang yang lebih jauh.
+  </div>
+
+  <p class="note" style="margin-top:20px">
+    <a href="player.html">&larr; video tracking TensorRT lengkap</a>
+  </p>
+</div>
+<script>
+  const tabs = [...document.querySelectorAll('[role=tab]')];
+  tabs.forEach(b => b.addEventListener('click', () => {
+    tabs.forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    document.querySelectorAll('.pane').forEach(p => p.classList.toggle('on', p.id === b.dataset.p));
+    document.querySelectorAll('video').forEach(v => { if (!v.closest('.pane').classList.contains('on')) v.pause(); });
+  }));
+</script>
+</body>
+</html>
