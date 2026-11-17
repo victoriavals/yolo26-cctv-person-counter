@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Person Counter - TensorRT@640</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin:0; background:#111; color:#eee; font:14px system-ui,sans-serif; padding:16px; }
+  h1 { font-size:16px; margin:0 0 4px; font-weight:600; }
+  p.sub { margin:0 0 14px; color:#999; }
+  video { width:100%; max-width:1280px; background:#000; border-radius:6px; display:block; }
+  .row { margin-top:12px; display:flex; gap:8px; flex-wrap:wrap; }
+  a { color:#7ab8ff; font-size:13px; }
+  table { border-collapse:collapse; margin-top:14px; font-size:13px; }
+  td { padding:3px 14px 3px 0; color:#bbb; }
+  td b { color:#eee; }
+</style>
+</head>
+<body>
+  <h1>people-walking &mdash; TensorRT @640, ByteTrack, conf 0.25</h1>
+  <p class="sub">1093 frame &middot; 45,59 detik &middot; 1920&times;1080</p>
+  <video controls autoplay muted loop playsinline>
+    <source src="people-walking_trt640_h264.mp4" type="video/mp4">
+    <source src="people-walking_trt640.webm" type="video/webm">
+  </video>
+  <table>
+    <tr><td>occupancy rata-rata</td><td><b>4,90</b> (median 5, maks 13)</td></tr>
+    <tr><td>track unik</td><td><b>120</b></td></tr>
+    <tr><td>garis tengah</td><td>masuk <b>8</b> / keluar <b>16</b></td></tr>
+    <tr><td>inferensi TensorRT</td><td><b>8,03 ms/frame &mdash; 124,6 FPS</b></td></tr>
+  </table>
+  <div class="row">
+    <a href="people-walking_trt640_h264.mp4">unduh versi 1080p H.264</a>
+    <a href="people-walking_trt_annotated.mp4">run TRT@416 yang salah (pembanding)</a>
+    <a href="warehouse_annotated.mp4">reality check gudang 17 Sep</a>
+  </div>
+</body>
+</html>
