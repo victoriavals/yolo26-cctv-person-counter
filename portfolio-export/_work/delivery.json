@@ -1,0 +1,17 @@
+{
+  "zipPath": "D:\\ML\\gorengan-counter\\yolo26-cctv-person-counter\\portfolio-export\\portfolio-public-yolo26-cctv-person-counter-2026-11-16.zip",
+  "bytes": 1160143,
+  "sha256": "031129c33cea294a3184869af7e39374f6bce7819114422f5f9c9bcf2bfcdc0f",
+  "packageFiles": 59,
+  "sourceFiles": 27,
+  "pythonModules": 16,
+  "mainVisuals": 7,
+  "previewVisuals": 7,
+  "validation": "passed",
+  "recommendedWebsiteAssets": [
+    "asset-01",
+    "asset-07",
+    "asset-02",
+    "asset-05"
+  ]
+}
