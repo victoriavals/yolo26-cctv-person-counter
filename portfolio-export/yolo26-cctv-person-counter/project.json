@@ -1,0 +1,682 @@
+{
+  "schemaVersion": "1.0",
+  "publicationMode": "public",
+  "defaultLanguage": "en",
+  "languages": [
+    "en",
+    "id"
+  ],
+  "slug": "yolo26-cctv-person-counter",
+  "title": {
+    "en": "CCTV Person Counter",
+    "id": "Penghitung Orang CCTV"
+  },
+  "domain": {
+    "en": "Computer Vision · Retail Analytics",
+    "id": "Visi Komputer · Analitik Ritel"
+  },
+  "summary": {
+    "en": "A computer vision pipeline for counting people in recorded indoor CCTV footage. It combines YOLO26s fine-tuning, tracking, line-crossing counts, dataset auditing, and runtime benchmarking, with documented limits on real-camera performance.",
+    "id": "Pipeline visi komputer untuk menghitung orang pada rekaman CCTV dalam ruangan. Proyek ini mencakup fine-tuning YOLO26s, tracking, penghitungan lintasan, audit dataset, dan benchmark runtime, dengan keterbatasan performa pada kamera nyata yang didokumentasikan."
+  },
+  "stack": [
+    "Python",
+    "PyTorch",
+    "Ultralytics YOLO26s",
+    "OpenCV",
+    "Supervision",
+    "OpenVINO",
+    "TensorRT"
+  ],
+  "purpose": {
+    "en": "Investigate per-frame person counting and directional footfall from a fixed indoor CCTV viewpoint.",
+    "id": "Mengkaji hitungan orang per frame dan lintasan pengunjung berdasarkan arah dari sudut pandang CCTV indoor tetap."
+  },
+  "targetUsers": {
+    "en": "Store operators and computer-vision developers evaluating recorded CCTV footage.",
+    "id": "Operator toko dan pengembang visi komputer yang mengevaluasi rekaman CCTV."
+  },
+  "status": {
+    "en": "Research prototype; store-camera validation incomplete.",
+    "id": "Prototipe riset; validasi kamera toko belum lengkap."
+  },
+  "problem": {
+    "en": "A useful store counter must distinguish the number visible now from line-crossing events and tracker identities. The initial CCTV dataset contained augmented duplicates, mixed categories, and split leakage; strong test scores also failed to predict the behavior of seated and occluded people in warehouse footage.",
+    "id": "Counter toko yang berguna perlu membedakan jumlah yang terlihat saat ini dari peristiwa melintasi garis dan identitas tracker. Dataset CCTV awal memuat duplikasi augmentasi, kategori campuran, dan kebocoran split; skor test tinggi juga belum memprediksi perilaku orang duduk dan tertutup pada rekaman warehouse."
+  },
+  "personalContribution": {
+    "en": "Naufal Firdaus designed and implemented the custom project pipeline, including dataset auditing and cleaning, experiment configuration, evaluation, export and runtime comparisons, video counting, and store-data preparation. Authorship and the victoriavals account identity were confirmed by the owner. The project uses third-party libraries, pretrained YOLO26s weights, and a Roboflow dataset; the detector is fine-tuned rather than trained from scratch.",
+    "id": "Naufal Firdaus merancang dan mengimplementasikan pipeline custom proyek, termasuk audit dan pembersihan dataset, konfigurasi eksperimen, evaluasi, ekspor dan perbandingan runtime, counting video, serta persiapan data toko. Kepengarangan dan identitas akun victoriavals dikonfirmasi oleh pemilik. Proyek memakai library pihak ketiga, bobot YOLO26s pretrained, dan dataset Roboflow; detektor melalui fine-tuning, bukan training dari awal."
+  },
+  "contributionEvidence": {
+    "type": "reported",
+    "source": "owner-confirmation",
+    "evidenceIds": [
+      "E01"
+    ]
+  },
+  "features": [
+    {
+      "text": {
+        "en": "Audit augmented duplicates and rebuild a single-person dataset with scene-grouped splits.",
+        "id": "Mengaudit duplikasi augmentasi dan membangun ulang dataset satu kelas person dengan split berbasis scene."
+      },
+      "evidenceIds": [
+        "E02",
+        "E03"
+      ]
+    },
+    {
+      "text": {
+        "en": "Fine-tune pretrained YOLO26s and compare default, reduced-augmentation, and indoor-only experiments.",
+        "id": "Melakukan fine-tuning YOLO26s pretrained dan membandingkan eksperimen default, augmentasi dikurangi, serta indoor saja."
+      },
+      "evidenceIds": [
+        "E04",
+        "E05"
+      ]
+    },
+    {
+      "text": {
+        "en": "Evaluate detection and per-frame counting using mAP, precision, recall, MAE, RMSE, bias, and within-one-person results.",
+        "id": "Mengevaluasi deteksi dan hitungan per frame menggunakan mAP, precision, recall, MAE, RMSE, bias, dan hasil dengan selisih maksimal satu orang."
+      },
+      "evidenceIds": [
+        "E06",
+        "E07"
+      ]
+    },
+    {
+      "text": {
+        "en": "Track detections with ByteTrack or BoT-SORT and count directional line crossings in recorded video.",
+        "id": "Melacak deteksi dengan ByteTrack atau BoT-SORT dan menghitung lintasan garis berdasarkan arah pada rekaman video."
+      },
+      "evidenceIds": [
+        "E08"
+      ]
+    },
+    {
+      "text": {
+        "en": "Export models and compare PyTorch, ONNX Runtime, OpenVINO, and TensorRT on local CPU and GPU hardware.",
+        "id": "Mengekspor model dan membandingkan PyTorch, ONNX Runtime, OpenVINO, serta TensorRT pada CPU dan GPU lokal."
+      },
+      "evidenceIds": [
+        "E09",
+        "E10"
+      ]
+    },
+    {
+      "text": {
+        "en": "Sample store-camera frames, generate draft labels, and merge manually corrected labels for a later fine-tuning run.",
+        "id": "Mengambil sampel frame kamera toko, membuat label draft, dan menggabungkan label yang dikoreksi manual untuk fine-tuning lanjutan."
+      },
+      "evidenceIds": [
+        "E11"
+      ]
+    }
+  ],
+  "engineeringFocus": [
+    {
+      "text": {
+        "en": "Treat data leakage and mixed annotations as engineering problems before comparing model scores.",
+        "id": "Menangani kebocoran data dan anotasi campuran sebagai persoalan engineering sebelum membandingkan skor model."
+      },
+      "evidenceIds": [
+        "E02",
+        "E03"
+      ]
+    },
+    {
+      "text": {
+        "en": "Measure counting error separately from object-detection quality and tracking identity counts.",
+        "id": "Mengukur galat hitungan secara terpisah dari kualitas deteksi objek dan jumlah identitas tracking."
+      },
+      "evidenceIds": [
+        "E06",
+        "E08"
+      ]
+    },
+    {
+      "text": {
+        "en": "Compare inference runtimes using exported graph sizes, warm-up, sampled detection matching, and local timing.",
+        "id": "Membandingkan runtime inferensi dengan ukuran graph ekspor, warm-up, kecocokan deteksi sampel, dan pengukuran waktu lokal."
+      },
+      "evidenceIds": [
+        "E09",
+        "E10",
+        "E12"
+      ]
+    },
+    {
+      "text": {
+        "en": "Document the gap between public-dataset results and the behavior of seated or partially occluded people on a store-like camera.",
+        "id": "Mendokumentasikan kesenjangan antara hasil dataset publik dan perilaku orang duduk atau tertutup sebagian pada kamera yang menyerupai toko."
+      },
+      "evidenceIds": [
+        "E13"
+      ]
+    }
+  ],
+  "architecture": {
+    "en": "Standalone Python CLI stages exchange files. The development branch audits and cleans data, fine-tunes pretrained YOLO26s, evaluates outputs, and exports models. The video branch loads a model backend, tracks detections with ByteTrack or BoT-SORT, updates a Supervision LineZone, and writes CSV, JSON, and optional annotated video. A static report server is a viewing helper, not an inference API.",
+    "id": "Tahap CLI Python mandiri bertukar berkas. Cabang pengembangan mengaudit dan membersihkan data, melakukan fine-tuning YOLO26s pretrained, mengevaluasi keluaran, dan mengekspor model. Cabang video memuat backend model, melacak deteksi dengan ByteTrack atau BoT-SORT, memperbarui Supervision LineZone, dan menulis CSV, JSON, serta video anotasi opsional. Server laporan statis adalah helper tampilan, bukan API inferensi."
+  },
+  "implementation": [
+    {
+      "feature": {
+        "en": "Dataset reconstruction",
+        "id": "Rekonstruksi dataset"
+      },
+      "paths": [
+        "tools/audit_duplicates.py",
+        "tools/clean_cctv.py",
+        "tools/families.py"
+      ],
+      "explanation": {
+        "en": "A histogram-based audit clusters copies within filename stems; cleaning keeps one representative, maps person categories, drops shoe annotations and non-CCTV families, and exports COCO and normalized YOLO labels.",
+        "id": "Audit berbasis histogram mengelompokkan salinan dalam stem nama berkas; pembersihan mempertahankan satu representasi, memetakan kategori orang, membuang anotasi sepatu dan keluarga non-CCTV, lalu mengekspor COCO dan label YOLO ternormalisasi."
+      },
+      "evidenceIds": [
+        "E02",
+        "E03"
+      ]
+    },
+    {
+      "feature": {
+        "en": "Experiment configuration",
+        "id": "Konfigurasi eksperimen"
+      },
+      "paths": [
+        "tools/train.py",
+        "tools/status.py"
+      ],
+      "explanation": {
+        "en": "COMMON and RUNS define shared training settings and explicit overrides. The progress monitor reads existing CSV logs for the three public-data experiments.",
+        "id": "COMMON dan RUNS mendefinisikan setelan training bersama serta override eksplisit. Pemantau progres membaca log CSV yang tersedia untuk tiga eksperimen data publik."
+      },
+      "evidenceIds": [
+        "E04",
+        "E05"
+      ]
+    },
+    {
+      "feature": {
+        "en": "Evaluation and reporting",
+        "id": "Evaluasi dan pelaporan"
+      },
+      "paths": [
+        "tools/evaluate.py",
+        "tools/make_eval_figures.py",
+        "tools/make_figures.py"
+      ],
+      "explanation": {
+        "en": "COCO evaluation measures detection; confidence-ordered matching and count differences measure counting. Predictions are cached as NPZ for report figures without repeated inference.",
+        "id": "Evaluasi COCO mengukur deteksi; pencocokan berdasarkan confidence dan selisih jumlah mengukur counting. Prediksi disimpan sebagai NPZ untuk gambar laporan tanpa inferensi berulang."
+      },
+      "evidenceIds": [
+        "E06",
+        "E07"
+      ]
+    },
+    {
+      "feature": {
+        "en": "Video counting",
+        "id": "Counting video"
+      },
+      "paths": [
+        "tools/count_people.py"
+      ],
+      "explanation": {
+        "en": "model.track uses persistent streaming results. Supervision LineZone maintains in/out crossing totals; the script writes per-frame CSV, summary JSON, and optional annotated MP4.",
+        "id": "model.track menggunakan hasil streaming yang persisten. Supervision LineZone menyimpan total lintasan masuk/keluar; skrip menulis CSV per frame, JSON ringkasan, dan MP4 anotasi opsional."
+      },
+      "evidenceIds": [
+        "E08"
+      ]
+    },
+    {
+      "feature": {
+        "en": "Runtime experiments",
+        "id": "Eksperimen runtime"
+      },
+      "paths": [
+        "tools/export.py",
+        "tools/benchmark_backends.py",
+        "tools/compare_backends_video.py",
+        "tools/make_backend_figure.py"
+      ],
+      "explanation": {
+        "en": "Exports are staged by format and input size. The comparison tools collect prediction timings and cached video detections; the video renderer does not provide tracking ground truth.",
+        "id": "Ekspor dipisahkan menurut format dan ukuran input. Alat perbandingan mengumpulkan waktu prediksi dan deteksi video tersimpan; perender video tidak menyediakan ground truth tracking."
+      },
+      "evidenceIds": [
+        "E09",
+        "E10"
+      ]
+    },
+    {
+      "feature": {
+        "en": "Store adaptation and static reports",
+        "id": "Adaptasi toko dan laporan statis"
+      },
+      "paths": [
+        "tools/prepare_labeling.py",
+        "tools/merge_store_data.py",
+        "tools/serve_reports.py",
+        "reports/"
+      ],
+      "explanation": {
+        "en": "Frame sampling, draft labeling, time-block merging, and a store training configuration exist. Store-specific evaluation remains missing. The HTTP helper only serves static report files.",
+        "id": "Pengambilan sampel frame, label draft, penggabungan blok waktu, dan konfigurasi training toko tersedia. Evaluasi khusus toko belum tersedia. Helper HTTP hanya melayani berkas laporan statis."
+      },
+      "evidenceIds": [
+        "E11",
+        "E14",
+        "E15"
+      ]
+    }
+  ],
+  "technicalDecisions": [
+    {
+      "decision": {
+        "en": "Deduplicate before splitting",
+        "id": "Dedup sebelum split"
+      },
+      "rationale": {
+        "en": "The source audit reports 10,062 files representing 4,886 photo clusters and copies shared across the original splits.",
+        "id": "Audit sumber melaporkan 10.062 berkas yang mewakili 4.886 cluster foto serta salinan yang tersebar pada split awal."
+      },
+      "tradeoff": {
+        "en": "The 0.97 histogram-similarity rule is heuristic and is applied within filename-stem groups; it does not prove universal deduplication.",
+        "id": "Aturan kemiripan histogram 0,97 bersifat heuristik dan diterapkan dalam kelompok stem nama berkas; ini tidak membuktikan deduplikasi universal."
+      },
+      "evidenceIds": [
+        "E02"
+      ]
+    },
+    {
+      "decision": {
+        "en": "Group splits by scene and stratify by domain and density",
+        "id": "Mengelompokkan split menurut scene serta stratifikasi domain dan kepadatan"
+      },
+      "rationale": {
+        "en": "The intended 80/10/10 allocation keeps frames from a named scene together while balancing the target indoor share.",
+        "id": "Alokasi 80/10/10 yang dituju menjaga frame dari scene bernama tetap bersama sambil menyeimbangkan proporsi indoor sasaran."
+      },
+      "tradeoff": {
+        "en": "The 142 semi/entrance images are all in train; entrance-specific performance is not measured on validation or test.",
+        "id": "Seluruh 142 gambar semi/pintu masuk berada pada train; performa khusus pintu masuk tidak diukur pada validation atau test."
+      },
+      "evidenceIds": [
+        "E03"
+      ]
+    },
+    {
+      "decision": {
+        "en": "Retain the default experiment",
+        "id": "Mempertahankan eksperimen default"
+      },
+      "rationale": {
+        "en": "The recorded default result has lower aggregate counting MAE than the reduced-augmentation and indoor-only runs.",
+        "id": "Hasil default yang tercatat memiliki MAE counting agregat lebih rendah daripada run augmentasi dikurangi dan indoor saja."
+      },
+      "tradeoff": {
+        "en": "These are recorded experiments with a single configured seed, not a repeated-run statistical comparison or a universal rule about augmentation.",
+        "id": "Ini adalah eksperimen tercatat dengan satu seed konfigurasi, bukan perbandingan statistik run berulang atau aturan universal mengenai augmentasi."
+      },
+      "evidenceIds": [
+        "E04",
+        "E07"
+      ]
+    },
+    {
+      "decision": {
+        "en": "Choose confidence using counting error",
+        "id": "Memilih confidence berdasarkan galat hitungan"
+      },
+      "rationale": {
+        "en": "The product goal is counting; the evaluator compares MAE and F1 over confidence thresholds.",
+        "id": "Tujuan produk adalah counting; evaluator membandingkan MAE dan F1 pada berbagai threshold confidence."
+      },
+      "tradeoff": {
+        "en": "The stored operating point was selected on the same test split. A future evaluation should choose it on validation before testing.",
+        "id": "Titik operasi tersimpan dipilih pada split test yang sama. Evaluasi berikutnya sebaiknya memilihnya pada validation sebelum test."
+      },
+      "evidenceIds": [
+        "E06",
+        "E07"
+      ]
+    },
+    {
+      "decision": {
+        "en": "Stage exports and inspect fixed graph dimensions",
+        "id": "Memisahkan ekspor dan memeriksa dimensi graph tetap"
+      },
+      "rationale": {
+        "en": "Ultralytics exports beside the weights; later resolutions can overwrite earlier files. The inspected copies include both 640 and 416 pixel OpenVINO graphs.",
+        "id": "Ultralytics mengekspor di samping bobot; resolusi berikutnya dapat menimpa berkas sebelumnya. Salinan yang diperiksa mencakup graph OpenVINO 640 dan 416 piksel."
+      },
+      "tradeoff": {
+        "en": "An imgsz argument does not replace the dimensions baked into a fixed export. Device and graph selection still need explicit checking.",
+        "id": "Argumen imgsz tidak mengganti dimensi yang sudah tertanam pada ekspor tetap. Pemilihan device dan graph tetap perlu diperiksa secara eksplisit."
+      },
+      "evidenceIds": [
+        "E09",
+        "E12"
+      ]
+    },
+    {
+      "decision": {
+        "en": "Use local runtime measurements to guide backend choice",
+        "id": "Menggunakan pengukuran runtime lokal untuk memandu pilihan backend"
+      },
+      "rationale": {
+        "en": "The historical sample favors OpenVINO for this CPU and TensorRT for this GPU; ONNX Runtime CPU was substantially slower on this workstation.",
+        "id": "Sampel historis lebih menguntungkan OpenVINO untuk CPU ini dan TensorRT untuk GPU ini; ONNX Runtime CPU jauh lebih lambat pada workstation ini."
+      },
+      "tradeoff": {
+        "en": "The 40-image parity result is sample-specific; crowded-video caches show different detection totals. Prediction throughput is not whole-pipeline throughput.",
+        "id": "Hasil kesamaan pada 40 gambar bersifat khusus sampel; cache video ramai menunjukkan total deteksi berbeda. Throughput prediksi bukan throughput seluruh pipeline."
+      },
+      "evidenceIds": [
+        "E10"
+      ]
+    }
+  ],
+  "proof": [
+    {
+      "type": "observed",
+      "title": {
+        "en": "Single-frame model-use example",
+        "id": "Contoh penggunaan model satu frame"
+      },
+      "text": {
+        "en": "Actual local YOLO26s inference returned 4 person detections in one selected dataset frame at image size 640 and confidence threshold 0.25 on CPU. Blue labels are returned confidence scores. One visible facial profile and camera text are redacted; back-of-head views are retained. This still image does not demonstrate tracking, unique visitors, or entry/exit accuracy.",
+        "id": "Inferensi YOLO26s lokal sebenarnya menghasilkan 4 deteksi orang pada satu frame dataset terpilih dengan ukuran gambar 640 dan confidence threshold 0,25 di CPU. Label biru adalah skor confidence yang dikembalikan model. Satu profil wajah yang terlihat dan teks kamera ditutup; tampilan belakang kepala dipertahankan. Gambar diam ini tidak membuktikan tracking, pengunjung unik, atau akurasi masuk/keluar."
+      },
+      "evidenceIds": [
+        "E20"
+      ],
+      "assetIds": [
+        "asset-07"
+      ]
+    },
+    {
+      "type": "reported",
+      "title": {
+        "en": "Recorded test-split detector result",
+        "id": "Hasil detektor pada split test yang tercatat"
+      },
+      "text": {
+        "en": "Default: mAP50 0.8907, mAP50–95 0.5842, confidence 0.25, 475 images and 1,844 annotated people. mAP was read from the historical report, not recomputed from a new inference run.",
+        "id": "Default: mAP50 0,8907, mAP50–95 0,5842, confidence 0,25, 475 gambar dan 1.844 anotasi orang. mAP dibaca dari laporan historis, bukan dihitung ulang dari inferensi baru."
+      },
+      "evidenceIds": [
+        "E07"
+      ],
+      "assetIds": [
+        "asset-02",
+        "asset-03"
+      ]
+    },
+    {
+      "type": "observed",
+      "title": {
+        "en": "Cached counting metrics independently checked",
+        "id": "Metrik counting tersimpan diperiksa ulang"
+      },
+      "text": {
+        "en": "Recalculation from cached predictions matches the stored counting and precision/recall metrics for seven model/size outputs. Default MAE is 0.640, within-one is 88.0%, and exact-count share is 55.58%. This checks cached outputs, not current live-camera inference.",
+        "id": "Penghitungan ulang dari prediksi tersimpan cocok dengan metrik counting serta precision/recall tersimpan untuk tujuh keluaran model/ukuran. MAE default adalah 0,640, within-one 88,0%, dan proporsi hitungan tepat 55,58%. Ini memeriksa keluaran tersimpan, bukan inferensi kamera langsung saat ini."
+      },
+      "evidenceIds": [
+        "E06",
+        "E07"
+      ],
+      "assetIds": [
+        "asset-03",
+        "asset-04"
+      ]
+    },
+    {
+      "type": "observed",
+      "title": {
+        "en": "Dataset and artifact checks",
+        "id": "Pemeriksaan dataset dan artefak"
+      },
+      "text": {
+        "en": "Local checks find 4,746 images, 18,445 boxes, no scene assigned to multiple splits in the manifest, matching COCO/YOLO labels, and matching committed model checksums. The unbundled inputs are identified by hashes.",
+        "id": "Pemeriksaan lokal menemukan 4.746 gambar, 18.445 kotak, tidak ada scene yang ditetapkan pada beberapa split di manifest, label COCO/YOLO yang cocok, dan checksum model tersimpan yang cocok. Input yang tidak disertakan diidentifikasi dengan hash."
+      },
+      "evidenceIds": [
+        "E03",
+        "E12"
+      ],
+      "assetIds": []
+    },
+    {
+      "type": "reported",
+      "title": {
+        "en": "Historical local runtime comparison",
+        "id": "Perbandingan runtime lokal historis"
+      },
+      "text": {
+        "en": "On the recorded 40-image, 640-pixel benchmark, OpenVINO CPU is about 19.9 FPS and TensorRT GPU about 78.3 FPS. These are local prediction-call measurements, not tracking accuracy or production throughput.",
+        "id": "Pada benchmark tercatat 40 gambar dan 640 piksel, OpenVINO CPU sekitar 19,9 FPS dan TensorRT GPU sekitar 78,3 FPS. Ini pengukuran pemanggilan prediksi lokal, bukan akurasi tracking atau throughput produksi."
+      },
+      "evidenceIds": [
+        "E10"
+      ],
+      "assetIds": [
+        "asset-05"
+      ]
+    }
+  ],
+  "limitations": [
+    {
+      "text": {
+        "en": "Real-camera counting is not validated for operational use. Historical warehouse output undercounts compared with the visual estimate in the README.",
+        "id": "Counting pada kamera nyata belum tervalidasi untuk penggunaan operasional. Keluaran warehouse historis menghitung lebih sedikit daripada perkiraan visual pada README."
+      },
+      "evidenceIds": [
+        "E13"
+      ]
+    },
+    {
+      "text": {
+        "en": "The dataset has no track IDs, no empty images, and limited target-camera coverage. Unique tracker IDs do not establish unique visitors.",
+        "id": "Dataset tidak memiliki track ID, gambar kosong, dan cakupan kamera sasaran yang memadai. ID tracker unik tidak membuktikan pengunjung unik."
+      },
+      "evidenceIds": [
+        "E03",
+        "E08"
+      ]
+    },
+    {
+      "text": {
+        "en": "Store sampling, merging, and training configuration exist, but store-only evaluation, its error gallery, and store progress monitoring are not implemented.",
+        "id": "Pengambilan sampel, penggabungan, dan konfigurasi training toko tersedia, tetapi evaluasi khusus toko, galeri error-nya, dan pemantauan progres toko belum diimplementasikan."
+      },
+      "evidenceIds": [
+        "E11",
+        "E14"
+      ]
+    },
+    {
+      "text": {
+        "en": "The counter accepts local video files and lacks explicit device and image-size CLI options. Occupancy is read from tracked results and can be influenced by tracker filtering.",
+        "id": "Counter menerima berkas video lokal dan belum memiliki opsi CLI device serta ukuran gambar secara eksplisit. Occupancy dibaca dari hasil tracking dan dapat dipengaruhi penyaringan tracker."
+      },
+      "evidenceIds": [
+        "E08"
+      ]
+    },
+    {
+      "text": {
+        "en": "The fallback shared ID of -1 can create false crossings. The store learning-rate override can be ignored by optimizer=auto in the installed Ultralytics version.",
+        "id": "ID cadangan bersama berupa -1 dapat menghasilkan lintasan palsu. Override learning rate toko dapat diabaikan oleh optimizer=auto pada versi Ultralytics yang terpasang."
+      },
+      "evidenceIds": [
+        "E16",
+        "E17"
+      ]
+    },
+    {
+      "text": {
+        "en": "Legacy dataset paths and some reports are stale. There is no original dependency manifest, automated test suite, or verified deployment configuration.",
+        "id": "Path dataset lama dan sebagian laporan sudah tertinggal. Tidak ada manifest dependensi asli, suite tes otomatis, atau konfigurasi deployment terverifikasi."
+      },
+      "evidenceIds": [
+        "E14",
+        "E15",
+        "E18"
+      ]
+    },
+    {
+      "text": {
+        "en": "Full dataset and model redistribution rights are unverified. Only one privacy-redacted example frame is included at the user's explicit direction. Training data, annotations, prediction caches, raw video, and model binaries remain excluded, so the ZIP alone cannot reproduce training or inference.",
+        "id": "Hak distribusi dataset lengkap dan model belum terverifikasi. Hanya satu frame contoh dengan redaksi privasi yang disertakan atas instruksi eksplisit pengguna. Data training, anotasi, cache prediksi, video mentah, dan binary model tetap dikeluarkan, sehingga ZIP saja tidak dapat mereproduksi training atau inferensi."
+      },
+      "evidenceIds": [
+        "E19"
+      ]
+    }
+  ],
+  "aiDetails": {
+    "input": {
+      "en": "COCO-format training images and local recorded video files.",
+      "id": "Gambar training berformat COCO dan berkas rekaman video lokal."
+    },
+    "preprocessing": {
+      "en": "Histogram-based duplicate audit, person-category mapping, scene-grouped splits, normalized YOLO boxes, and model image preparation handled by Ultralytics.",
+      "id": "Audit duplikasi berbasis histogram, pemetaan kategori person, split berbasis scene, kotak YOLO ternormalisasi, dan persiapan gambar model melalui Ultralytics."
+    },
+    "model": {
+      "en": "Single-class, end-to-end YOLO26s person detector initialized from pretrained weights.",
+      "id": "Detektor person YOLO26s end-to-end satu kelas yang diinisialisasi dari bobot pretrained."
+    },
+    "training": {
+      "en": "Fine-tuning experiments are implemented and historical run artifacts are present. Training from random initialization is not the workflow.",
+      "id": "Eksperimen fine-tuning diimplementasikan dan artefak run historis tersedia. Training dari inisialisasi acak bukan alur yang digunakan."
+    },
+    "inference": {
+      "en": "Ultralytics detection/tracking with a selected PyTorch or exported runtime; the counter requests 640-pixel inference and confidence 0.25 by default.",
+      "id": "Deteksi/tracking Ultralytics dengan runtime PyTorch atau ekspor yang dipilih; counter meminta inferensi 640 piksel dan confidence 0,25 secara default."
+    },
+    "output": {
+      "en": "Person boxes, tracking IDs, per-frame tracked-result counts, directional crossing totals, CSV/JSON summaries, and optional video overlays.",
+      "id": "Kotak orang, ID tracking, hitungan hasil tracking per frame, total lintasan berdasarkan arah, ringkasan CSV/JSON, dan overlay video opsional."
+    },
+    "retrieval": null,
+    "retrievalExplanation": {
+      "en": "No retrieval system, language model, or vector database is implemented.",
+      "id": "Tidak ada sistem retrieval, model bahasa, atau database vektor yang diimplementasikan."
+    }
+  },
+  "sources": [
+    {
+      "id": "source-code",
+      "label": {
+        "en": "Python source at reviewed commit",
+        "id": "Source Python pada commit yang ditinjau"
+      },
+      "url": "https://github.com/victoriavals/yolo26-cctv-person-counter/tree/624a840b2de026585d7da4bd9bfeb5f92f8984fd/tools",
+      "type": "source",
+      "verifiedPublic": true
+    },
+    {
+      "id": "source-readme",
+      "label": {
+        "en": "Project README at reviewed commit",
+        "id": "README proyek pada commit yang ditinjau"
+      },
+      "url": "https://github.com/victoriavals/yolo26-cctv-person-counter/blob/624a840b2de026585d7da4bd9bfeb5f92f8984fd/README.md",
+      "type": "documentation",
+      "verifiedPublic": true
+    },
+    {
+      "id": "package-evidence",
+      "label": {
+        "en": "Sanitized aggregate evidence",
+        "id": "Bukti agregat yang disanitasi"
+      },
+      "packagePath": "technical/aggregate-evidence.json",
+      "type": "evidence"
+    },
+    {
+      "id": "single-frame-example",
+      "label": {
+        "en": "Single-frame inference example and usage",
+        "id": "Contoh inferensi satu frame dan penggunaan"
+      },
+      "packagePath": "technical/person-counter-example.md",
+      "type": "evidence"
+    }
+  ],
+  "demo": null,
+  "demoUnavailableReason": {
+    "en": "No public application demo was verified. The local HTML pages are historical report viewers with omitted media dependencies.",
+    "id": "Tidak ada demo aplikasi publik yang terverifikasi. Halaman HTML lokal adalah penampil laporan historis dengan dependensi media yang dikeluarkan."
+  },
+  "coverAsset": "asset-01",
+  "recommendedWebsiteAssets": [
+    "asset-01",
+    "asset-07",
+    "asset-02",
+    "asset-05"
+  ],
+  "snapshot": {
+    "repository": "https://github.com/victoriavals/yolo26-cctv-person-counter",
+    "branch": "main",
+    "commit": "624a840b2de026585d7da4bd9bfeb5f92f8984fd",
+    "reviewDate": "2026-11-16",
+    "timezone": "Asia/Jakarta",
+    "trackedWorkingTreeClean": true,
+    "localChangedTrackedPaths": [],
+    "trackedFileCount": 167,
+    "repositoryVisibility": "public",
+    "repositoryLicenseSpdx": null,
+    "repositoryHomepage": null,
+    "remoteMetadataCheckedVia": "GitHub connector; GET repository metadata",
+    "remoteMetadataCheckedOn": "2026-11-16",
+    "ownerConfirmation": {
+      "name": "Naufal Firdaus",
+      "githubAccount": "victoriavals",
+      "confirmationDate": "2026-11-16",
+      "source": "Owner statement in this session",
+      "customCodeRedistributionAuthorized": true,
+      "customProjectAuthorshipConfirmed": true,
+      "newLicenseAssigned": false
+    },
+    "scope": {
+      "en": "AI person-counter repository only; adjacent repositories and unpublished manuscripts excluded.",
+      "id": "Hanya repository AI person counter; repository pendamping dan naskah belum terbit dikeluarkan."
+    },
+    "artifactScope": {
+      "en": "Local ignored datasets and model files were inspected; their original files are not exported. Exactly one privacy-redacted derivative frame is included at the user's explicit direction. Input hashes identify unbundled artifacts separately from the source commit.",
+      "id": "Dataset dan model lokal yang diabaikan Git diperiksa; berkas aslinya tidak diekspor. Tepat satu frame turunan dengan redaksi privasi disertakan atas instruksi eksplisit pengguna. Hash input mengidentifikasi artefak yang tidak dibundel secara terpisah dari commit source."
+    },
+    "exportRevision": {
+      "en": "The untracked portfolio output now also contains one explicitly user-directed, redacted model-use frame; original tracked repository files remain unchanged.",
+      "id": "Keluaran portfolio yang tidak terlacak kini juga memuat satu frame penggunaan model dengan redaksi atas instruksi eksplisit pengguna; berkas repository asli yang terlacak tetap tidak berubah."
+    }
+  },
+  "licenseStatus": {
+    "repositoryLicenseSpdx": null,
+    "customMaterialDistribution": {
+      "en": "The owner authorized preparation and sharing of this custom-code portfolio handoff. No new license or general third-party reuse grant is assigned by this export.",
+      "id": "Pemilik mengizinkan penyiapan dan pembagian handoff portfolio kode custom ini. Ekspor ini tidak menetapkan lisensi baru atau izin umum penggunaan ulang oleh pihak ketiga."
+    },
+    "datasetAndModelRedistribution": "unverified-full-dataset-and-models-excluded-one-user-directed-redacted-frame",
+    "singleFrameInclusion": {
+      "userExplicitlyRequestedInPublicZip": true,
+      "instructionDate": "2026-11-16",
+      "upstreamDatasetLicense": "undefined",
+      "upstreamRightsIndependentlyVerified": false,
+      "scope": {
+        "en": "Only this privacy-redacted example frame is included at the user's explicit direction; no general dataset or model redistribution clearance is inferred.",
+        "id": "Hanya frame contoh dengan redaksi privasi ini yang disertakan atas instruksi eksplisit pengguna; tidak disimpulkan adanya izin distribusi umum untuk dataset atau model."
+      }
+    }
+  }
+}
