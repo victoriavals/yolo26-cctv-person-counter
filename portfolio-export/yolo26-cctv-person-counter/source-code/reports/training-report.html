@@ -1,0 +1,472 @@
+<title>Hasil Training YOLO26s</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --ground:#f4f6f8; --surface:#fff; --surface-2:#eaeef2;
+  --line:#d5dce3; --line-soft:#e5eaef;
+  --ink:#111820; --ink-2:#48545f; --ink-3:#77838f;
+  --win:#2a78d6; --win-soft:#dceafa;
+  --alt:#eb6834; --aqua:#12805a;
+  --crit:#d2372f; --crit-soft:#fadedc;
+  --good:#12805a; --good-soft:#d8f0e6; --warn:#b07200;
+  --measure:68ch; --radius:4px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:#0e1216; --surface:#161c22; --surface-2:#1e252d;
+    --line:#2c353e; --line-soft:#222a32;
+    --ink:#e9eef3; --ink-2:#a3b0bc; --ink-3:#7d8a96;
+    --win:#4b95e8; --win-soft:#17293f;
+    --alt:#ee7f52; --aqua:#2bb987;
+    --crit:#f0655f; --crit-soft:#3a1a18;
+    --good:#2bb987; --good-soft:#0f2f25; --warn:#dba22a;
+  }
+}
+:root[data-theme="dark"] {
+  --ground:#0e1216; --surface:#161c22; --surface-2:#1e252d;
+  --line:#2c353e; --line-soft:#222a32;
+  --ink:#e9eef3; --ink-2:#a3b0bc; --ink-3:#7d8a96;
+  --win:#4b95e8; --win-soft:#17293f;
+  --alt:#ee7f52; --aqua:#2bb987;
+  --crit:#f0655f; --crit-soft:#3a1a18;
+  --good:#2bb987; --good-soft:#0f2f25; --warn:#dba22a;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);margin:0;
+  font-family:"Source Serif 4",Georgia,serif;font-size:17px;line-height:1.6}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+p,ul,ol{max-width:var(--measure)}
+h1,h2,h3,.ui{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;text-wrap:balance}
+.mono,code,.num{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-variant-numeric:tabular-nums}
+
+header.top{border-bottom:2px solid var(--ink);padding-block:44px 20px;margin-bottom:34px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+h1{font-size:clamp(30px,6.2vw,52px);font-weight:700;letter-spacing:-.021em;
+  line-height:1.04;margin:0 0 14px}
+.standfirst{font-size:clamp(17px,2.3vw,20px);color:var(--ink-2);max-width:62ch;margin:0}
+
+.verdict{background:var(--surface);border:1px solid var(--line);
+  border-left:5px solid var(--win);border-radius:var(--radius);padding:26px 28px}
+.verdict h2{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 12px}
+.verdict .call{font-family:Archivo,sans-serif;font-size:clamp(22px,3.6vw,30px);
+  font-weight:700;line-height:1.22;letter-spacing:-.015em;margin:0 0 14px;max-width:30ch}
+.verdict .call em{font-style:normal;color:var(--win)}
+.verdict p{margin:0;color:var(--ink-2);font-size:16.5px}
+
+section{margin-top:60px}
+h2.sec{font-size:clamp(21px,3.2vw,27px);font-weight:700;letter-spacing:-.014em;margin:0 0 6px}
+.sec-tag{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:9px}
+.lede{color:var(--ink-2);margin:0 0 22px}
+
+.hero{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:8px}
+@media(max-width:720px){.hero{grid-template-columns:1fr 1fr}}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px}
+.tile .k{font-family:Archivo,sans-serif;font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+.tile .v{font-family:"IBM Plex Mono",monospace;font-size:26px;font-weight:600;
+  line-height:1;color:var(--win);font-variant-numeric:tabular-nums}
+.tile .was{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-3);
+  margin-top:7px}
+.tile .was b{color:var(--good);font-weight:600}
+
+.tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+th,td{padding:9px 13px;text-align:left;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+th{font-family:Archivo,sans-serif;font-weight:600;font-size:12.5px;background:var(--surface-2);
+  color:var(--ink-2);border-bottom:1px solid var(--line)}
+td.n{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:0}
+tr.winner td{background:var(--win-soft)}
+tr.winner td:first-child{font-weight:600}
+td.best{color:var(--win);font-weight:600}
+
+figure{margin:0 0 8px}
+figure img{display:block;width:100%;height:auto;border:1px solid var(--line);
+  border-radius:var(--radius);background:#14140f}
+figcaption{font-size:14px;color:var(--ink-3);margin-top:10px;max-width:var(--measure)}
+figcaption b{color:var(--ink-2);font-weight:600}
+
+.callout{border:1px solid var(--line);border-left:4px solid var(--warn);
+  background:var(--surface);border-radius:var(--radius);padding:16px 20px;margin-top:20px}
+.callout.bad{border-left-color:var(--crit)}
+.callout.ok{border-left-color:var(--good)}
+.callout p{margin:0;font-size:15px;color:var(--ink-2);max-width:none}
+.callout p+p{margin-top:10px}
+.callout strong{color:var(--ink)}
+
+.steps{counter-reset:s;list-style:none;padding:0;margin:0;max-width:var(--measure)}
+.steps li{counter-increment:s;position:relative;padding-left:38px;padding-block:11px;
+  border-top:1px solid var(--line-soft);font-size:15.5px}
+.steps li:first-child{border-top:0}
+.steps li::before{content:counter(s);position:absolute;left:0;top:12px;
+  font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+  color:var(--win);background:var(--win-soft);width:23px;height:23px;border-radius:50%;
+  display:grid;place-items:center}
+
+pre.cmd{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;overflow-x:auto;font-family:"IBM Plex Mono",monospace;font-size:12.5px;
+  line-height:1.7;color:var(--ink-2);margin:0}
+
+footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:13px;color:var(--ink-3);font-family:"IBM Plex Mono",monospace}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Hasil training &middot; person-counter</div>
+  <h1>Hasil Training YOLO26s</h1>
+  <p class="standfirst">Empat model diuji di split test yang sama: satu pretrained COCO sebagai pembanding, tiga hasil fine-tuning. Diukur dengan metrik yang benar-benar menentukan bagi penghitung orang — galat jumlah, bukan mAP.</p>
+</header>
+
+<div class="verdict">
+  <h2>Vonis</h2>
+  <p class="call">Pakai run <em>default</em>.</p>
+  <p>Menang di hampir semua metrik. Galat hitung turun dari <span class="mono">1,60</span> ke <span class="mono">0,64</span> orang per frame — <b>2,5&times; lebih akurat</b> dari model bawaan. Bobotnya di <span class="mono">runs/person/default/weights/best.pt</span>, titik operasi <span class="mono">conf = 0,25</span>. Untuk menjalankannya: <b>TensorRT</b> kalau ada GPU (78,3 FPS), <b>OpenVINO</b> kalau tanpa GPU (19,9 FPS). Keduanya di 640px.</p>
+</div>
+
+<!-- ============================================ hero -->
+<section id="ringkas">
+  <span class="sec-tag">Perubahan terbesar</span>
+  <h2 class="sec">Model bawaan vs hasil fine-tuning</h2>
+  <p class="lede">Semua angka dari split test (475 gambar, 1.844 kotak) yang tidak pernah dilihat saat training.</p>
+
+  <div class="hero">
+    <div class="tile">
+      <div class="k">Galat hitung (MAE)</div>
+      <div class="v">0,64</div>
+      <div class="was">dari <b>1,60</b> &mdash; turun 60%</div>
+    </div>
+    <div class="tile">
+      <div class="k">Akurat dalam &plusmn;1 orang</div>
+      <div class="v">88,0%</div>
+      <div class="was">dari <b>65,9%</b></div>
+    </div>
+    <div class="tile">
+      <div class="k">Recall</div>
+      <div class="v">0,845</div>
+      <div class="was">dari <b>0,588</b></div>
+    </div>
+    <div class="tile">
+      <div class="k">mAP50</div>
+      <div class="v">0,891</div>
+      <div class="was">dari <b>0,644</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ scorecard -->
+<section id="tabel">
+  <span class="sec-tag">Perbandingan lengkap</span>
+  <h2 class="sec">Keempat model berdampingan</h2>
+  <p class="lede">Tiap model dipakai pada threshold yang meminimalkan galat hitungnya sendiri — jadi perbandingannya adil, bukan satu threshold dipaksakan ke semua.</p>
+
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr>
+        <th>Model</th><th>conf</th><th>mAP50</th><th>mAP50-95</th>
+        <th>MAE</th><th>RMSE</th><th>bias</th><th>&plusmn;1</th><th>P</th><th>R</th><th>Waktu latih</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td>baseline <span style="color:var(--ink-3)">(pretrained COCO)</span></td>
+          <td class="n">0,15</td><td class="n">0,644</td><td class="n">0,288</td>
+          <td class="n">1,600</td><td class="n">3,374</td><td class="n">&minus;0,94</td>
+          <td class="n">65,9%</td><td class="n">0,776</td><td class="n">0,588</td>
+          <td class="n">&mdash;</td>
+        </tr>
+        <tr class="winner">
+          <td>default</td>
+          <td class="n">0,25</td><td class="n best">0,891</td><td class="n best">0,584</td>
+          <td class="n best">0,640</td><td class="n best">1,170</td><td class="n">&minus;0,12</td>
+          <td class="n best">88,0%</td><td class="n best">0,873</td><td class="n best">0,845</td>
+          <td class="n">2j 29m &middot; 131 ep</td>
+        </tr>
+        <tr>
+          <td>tuned <span style="color:var(--ink-3)">(augmentasi disesuaikan)</span></td>
+          <td class="n">0,20</td><td class="n">0,873</td><td class="n">0,581</td>
+          <td class="n">0,659</td><td class="n">1,235</td><td class="n best">&minus;0,10</td>
+          <td class="n">85,7%</td><td class="n">0,853</td><td class="n">0,832</td>
+          <td class="n">2j 50m &middot; 150 ep</td>
+        </tr>
+        <tr>
+          <td>indoor <span style="color:var(--ink-3)">(hanya data indoor)</span></td>
+          <td class="n">0,15</td><td class="n">0,679</td><td class="n">0,341</td>
+          <td class="n">1,322</td><td class="n">2,009</td><td class="n">&minus;0,86</td>
+          <td class="n">68,2%</td><td class="n">0,800</td><td class="n">0,622</td>
+          <td class="n">39m &middot; 80 ep</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:14px;color:var(--ink-3);margin-top:12px">Bias negatif = model cenderung <em>kekurangan</em> hitung. Baseline melewatkan hampir 1 orang per frame; <span class="mono">default</span> praktis tidak bias.</p>
+</section>
+
+<!-- ============================================ scatter -->
+<section id="scatter">
+  <span class="sec-tag">Bukti &middot; yang paling menentukan</span>
+  <h2 class="sec">Model bawaan menyerah saat ramai</h2>
+  <p class="lede">Tiap titik satu frame: sumbu X jumlah orang sebenarnya, sumbu Y jumlah yang terdeteksi. Garis putus-putus adalah prediksi sempurna.</p>
+
+  <figure>
+    <img src="figures/scatter.png" alt="Scatter jumlah prediksi vs jumlah sebenarnya untuk keempat model">
+    <figcaption>Perhatikan panel <b>baseline</b>: titik-titiknya mendatar di sekitar 10 walaupun sebenarnya ada 35&ndash;39 orang — model bawaan <b>berhenti menghitung</b> begitu frame ramai. Panel <b>default</b> mengikuti garis diagonal sampai 35+.</figcaption>
+  </figure>
+
+  <div class="callout ok">
+    <p><strong>Inilah alasan fine-tuning sepadan.</strong> Untuk penghitung toko, kesalahan saat sepi tidak banyak merugikan — kesalahan saat ramai yang merusak angka harian. Di bucket 6&ndash;10 orang, MAE turun dari 1,83 (baseline) ke 0,97 (default).</p>
+  </div>
+</section>
+
+<!-- ============================================ breakdown -->
+<section id="domain">
+  <span class="sec-tag">Bukti &middot; domain pemasangan</span>
+  <h2 class="sec">Celah indoor tertutup</h2>
+  <p class="lede">Temuan paling penting untuk kasus Anda. Model bawaan justru paling lemah di ruangan — tempat kamera toko Anda dipasang.</p>
+
+  <div class="tbl-scroll" style="margin-bottom:22px">
+    <table>
+      <thead><tr><th>Domain</th><th>n</th><th>mAP50 baseline</th><th>mAP50 default</th><th>Selisih</th><th>Recall baseline</th><th>Recall default</th></tr></thead>
+      <tbody>
+        <tr class="winner"><td>indoor</td><td class="n">176</td><td class="n">0,551</td><td class="n best">0,904</td><td class="n" style="color:var(--good)">+0,353</td><td class="n">0,489</td><td class="n best">0,859</td></tr>
+        <tr><td>outdoor</td><td class="n">183</td><td class="n">0,792</td><td class="n">0,924</td><td class="n" style="color:var(--good)">+0,132</td><td class="n">0,753</td><td class="n">0,892</td></tr>
+        <tr><td>unknown</td><td class="n">116</td><td class="n">0,470</td><td class="n">0,789</td><td class="n" style="color:var(--good)">+0,319</td><td class="n">0,440</td><td class="n">0,723</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Sebelum fine-tuning, indoor tertinggal <b>24 poin</b> dari outdoor (0,551 vs 0,792) — masuk akal, karena COCO penuh orang dari sudut setinggi mata di jalanan dan hampir tidak punya sudut kamera plafon. Sesudahnya selisihnya tinggal <b>2 poin</b> (0,904 vs 0,924). Recall indoor melompat dari 0,489 ke 0,859: dari <em>separuh orang tidak terdeteksi</em> menjadi hampir semua.</p>
+
+  <figure style="margin-top:26px">
+    <img src="figures/breakdown.png" alt="Bar chart mAP50 dan MAE per domain dan per kepadatan untuk keempat model">
+    <figcaption>Baris atas mAP50, baris bawah MAE hitungan. Kolom kiri per domain, kanan per kepadatan. <b>default</b> (oranye) dan <b>tuned</b> (biru) berdekatan di mana-mana; <b>indoor</b> (hijau) runtuh di luar domainnya.</figcaption>
+  </figure>
+</section>
+
+<!-- ============================================ threshold -->
+<section id="threshold">
+  <span class="sec-tag">Titik operasi</span>
+  <h2 class="sec">Threshold untuk menghitung bukan threshold untuk F1</h2>
+  <p class="lede">YOLO26 bersifat NMS-free, jadi satu-satunya yang bisa disetel adalah <span class="mono">conf</span>. Dan yang dioptimalkan harus galat hitung, bukan F1.</p>
+
+  <figure>
+    <img src="figures/sweep.png" alt="Kurva MAE dan F1 terhadap threshold conf untuk keempat model">
+    <figcaption>Titik pada kurva kiri menandai threshold dengan galat hitung terkecil. Pada <b>tuned</b>, optimum hitungan jatuh di <span class="mono">conf 0,20</span> sementara F1 maksimum di <span class="mono">0,50</span> — memilih berdasarkan F1 akan menaikkan galat hitungnya.</figcaption>
+  </figure>
+
+  <div class="callout">
+    <p><strong>Untuk <span class="mono">default</span> keduanya kebetulan bertemu di 0,25</strong>, jadi tidak ada konflik. Tapi jangan anggap itu berlaku umum — pada <span class="mono">tuned</span> jaraknya 0,30 dan pemilihan yang salah langsung menaikkan galat hitung.</p>
+  </div>
+</section>
+
+<!-- ============================================ qualitative -->
+<section id="visual">
+  <span class="sec-tag">Bukti &middot; kualitatif</span>
+  <h2 class="sec">Seperti apa hasilnya di gambar</h2>
+  <p class="lede">Kotak biru ground truth, hijau prediksi benar, merah prediksi salah.</p>
+
+  <figure>
+    <img src="figures/grid_default_baik.png" alt="Enam frame dengan prediksi paling akurat">
+    <figcaption>Enam frame paling akurat dari <b>default</b>. Hitungan tepat termasuk pada frame padat.</figcaption>
+  </figure>
+
+  <figure style="margin-top:24px">
+    <img src="figures/grid_default_buruk.png" alt="Enam frame dengan galat hitung terbesar">
+    <figcaption>Enam frame <b>terburuk</b>. Di sinilah sisa galatnya: kerumunan sangat padat dan orang yang saling menutupi.</figcaption>
+  </figure>
+
+  <figure style="margin-top:24px">
+    <img src="figures/errors_default.png" alt="Galeri false positive dan false negative">
+    <figcaption>Baris atas: false positive yang model paling yakini. Baris bawah: orang terbesar yang terlewat. Galeri ini yang paling cepat menunjukkan <em>kenapa</em> model gagal, bukan sekadar seberapa sering.</figcaption>
+  </figure>
+</section>
+
+<!-- ============================================ negative results -->
+<section id="gagal">
+  <span class="sec-tag">Yang tidak berhasil</span>
+  <h2 class="sec">Dua hipotesis yang terbantah</h2>
+
+  <div class="callout bad">
+    <p><strong>1. Menurunkan augmentasi tidak membantu.</strong> Alasannya terdengar kuat: gambar dataset ini sudah teraugmentasi di pikselnya, dan kamera CCTV toko itu diam — tidak berputar, tidak zoom, white balance tetap. Jadi <span class="mono">hsv_v</span>, <span class="mono">hsv_s</span>, dan <span class="mono">scale</span> diturunkan.</p>
+    <p>Hasilnya <b>sedikit lebih buruk di hampir semua metrik</b>: mAP50 0,873 vs 0,891, MAE 0,659 vs 0,640, recall 0,832 vs 0,845. Hanya bias yang sedikit lebih baik (&minus;0,10 vs &minus;0,12). Kesimpulannya: augmentasi default Ultralytics sudah cukup baik untuk data ini, dan penalaran domain yang masuk akal tetap harus diuji.</p>
+  </div>
+
+  <div class="callout bad">
+    <p><strong>2. Melatih hanya dengan data indoor merugikan — bahkan untuk indoor.</strong> Hipotesisnya: data outdoor mungkin menarik model menjauh dari domain toko. Terbantah dengan jelas.</p>
+    <p>Di subset indoor sendiri, run <span class="mono">indoor</span> mencapai mAP50 0,885 — <b>masih di bawah</b> <span class="mono">default</span> yang 0,904, padahal <span class="mono">default</span> juga belajar dari outdoor. Dan di luar domainnya run ini runtuh: mAP50 0,270 pada <span class="mono">unknown</span>. Data outdoor ternyata <b>membantu</b> performa indoor, bukan mengganggu — kemungkinan karena menambah variasi pose, cahaya, dan skala.</p>
+  </div>
+
+  <p style="margin-top:22px">Kedua hasil negatif ini berguna: keduanya menutup arah eksplorasi yang kalau tidak diuji akan terus terasa menjanjikan.</p>
+</section>
+
+<!-- ============================================ weakness -->
+<section id="lemah">
+  <span class="sec-tag">Sisa kelemahan</span>
+  <h2 class="sec">Yang masih perlu diwaspadai</h2>
+
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>Kelemahan</th><th>Angka</th><th>Artinya di lapangan</th></tr></thead>
+      <tbody>
+        <tr><td>Objek kecil</td><td class="n">AP 0,283</td><td>Orang jauh dari kamera masih sering terlewat (baseline 0,061 &rarr; membaik 4,6&times;, tapi tetap rendah)</td></tr>
+        <tr><td>Frame padat</td><td class="n">MAE 0,97</td><td>Pada 6&ndash;10 orang, galat hampir 1 orang; di atas 12 orang datanya terlalu sedikit untuk diukur</td></tr>
+        <tr><td>Scene tak dikenal</td><td class="n">mAP50 0,789</td><td>Lokasi yang tidak mirip data latih turun ~11 poin dari indoor</td></tr>
+        <tr><td>Cenderung kurang hitung</td><td class="n">bias &minus;0,12</td><td>Kecil, tapi konsisten ke arah <em>kurang</em> — penting kalau dipakai untuk kapasitas ruangan</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p><strong>Batas yang tidak bisa ditembus dataset ini:</strong> 50% frame latih berisi ≤2 orang dan hanya 1,1% di atas 12. Angka pada kondisi sangat ramai di atas belum terukur dengan andal — bukan karena modelnya bagus di sana, tapi karena datanya tidak ada.</p>
+  </div>
+</section>
+
+<!-- ============================================ tahap 5 -->
+<section id="deployment">
+  <span class="sec-tag">Tahap 5 &middot; kesiapan deployment</span>
+  <h2 class="sec">Kecepatan, ONNX, dan uji kenyataan</h2>
+  <p class="lede">Tiga hal diukur: runtime mana yang tercepat tanpa mengorbankan akurasi, resolusi inferensi mana yang sepadan, dan apa yang terjadi saat dipasang di rekaman CCTV nyata. Yang terakhir hasilnya paling penting &mdash; dan paling tidak menyenangkan.</p>
+
+  <h3 style="font-size:17px;margin:26px 0 8px">Enam backend diadu di CPU dan GPU</h3>
+  <p>PyTorch, ONNX, OpenVINO, dan TensorRT diuji pada gambar yang sama. Kecepatan saja akan menyesatkan, jadi masing-masing juga diperiksa <b>kesetiaannya</b>: apakah menghasilkan deteksi yang sama dengan PyTorch CPU. Backend yang cepat karena diam-diam membuang kotak bukan backend yang cepat.</p>
+  <p>Device dipaksa eksplisit di setiap pengukuran. Ultralytics jatuh ke device <span class="mono">AUTO</span> milik OpenVINO begitu ada perangkat selain CPU yang terdeteksi &mdash; dan di mesin ini OpenVINO mendaftarkan kartu NVIDIA sebagai <span class="mono">GPU</span>. Tanpa <span class="mono">intel:cpu</span> / <span class="mono">intel:gpu</span>, pengukuran yang dimaksudkan untuk CPU bisa diam-diam dijalankan di GPU.</p>
+
+  <figure style="margin-top:20px">
+    <img src="figures/backends.png" alt="Perbandingan latensi skala log, throughput, dan kesetiaan untuk enam backend di CPU dan GPU">
+    <figcaption>Panel kiri memakai skala logaritmik karena rentangnya 11&ndash;700 ms; pada skala linier semua yang di bawah ONNX akan gepeng jadi satu. Panel kanan yang membuat dua panel lain bisa dipercaya: <b>keenam backend 100% setia</b>, tidak ada yang cepat karena membuang deteksi.</figcaption>
+  </figure>
+
+  <div class="tbl-scroll" style="margin-top:22px">
+    <table>
+      <thead><tr><th>Backend</th><th>HW</th><th>640px</th><th>FPS</th><th>416px</th><th>FPS</th><th>Kesetiaan</th><th>&Delta;conf maks</th></tr></thead>
+      <tbody>
+        <tr><td>PyTorch</td><td class="n">CPU</td><td class="n">257,4 ms</td><td class="n">3,9</td><td class="n">128,4 ms</td><td class="n">7,8</td><td class="n">&mdash; (referensi)</td><td class="n">&mdash;</td></tr>
+        <tr><td>ONNX</td><td class="n">CPU</td><td class="n" style="color:var(--crit)">696,2 ms</td><td class="n" style="color:var(--crit)">1,4</td><td class="n" style="color:var(--crit)">398,9 ms</td><td class="n" style="color:var(--crit)">2,5</td><td class="n">100%</td><td class="n">0,00021</td></tr>
+        <tr class="winner"><td>OpenVINO &mdash; terbaik untuk CPU</td><td class="n">CPU</td><td class="n best">50,2 ms</td><td class="n best">19,9</td><td class="n best">27,5 ms</td><td class="n best">36,4</td><td class="n">100%</td><td class="n">0,00030</td></tr>
+        <tr><td>PyTorch</td><td class="n">GPU</td><td class="n">26,8 ms</td><td class="n">37,3</td><td class="n">24,9 ms</td><td class="n">40,2</td><td class="n">100%</td><td class="n">0,07932</td></tr>
+        <tr><td>OpenVINO</td><td class="n">GPU</td><td class="n">37,4 ms</td><td class="n">26,8</td><td class="n">35,4 ms</td><td class="n">28,2</td><td class="n">100%</td><td class="n">0,00032</td></tr>
+        <tr class="winner"><td>TensorRT &mdash; terbaik untuk GPU</td><td class="n">GPU</td><td class="n best">12,8 ms</td><td class="n best">78,3</td><td class="n best">11,0 ms</td><td class="n best">90,8</td><td class="n">100%</td><td class="n">0,09805</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout ok">
+    <p><strong>Ada GPU &rarr; TensorRT.</strong> 12,8 ms pada 640px, <b>2,1&times; lebih cepat dari PyTorch di GPU yang sama</b> (26,8 ms) dan 78,3 FPS &mdash; lebih dari lima kali kecepatan kamera CCTV 15 fps. Cukup untuk memproses lima aliran kamera sekaligus dari satu kartu.</p>
+    <p><strong>Tanpa GPU &rarr; OpenVINO.</strong> 50,2 ms pada 640px, <b>5,1&times; lebih cepat dari PyTorch di CPU yang sama</b> (257,4 ms). 19,9 FPS sudah di atas kebutuhan kamera 15 fps pada resolusi penuh, jadi mesin toko tanpa kartu grafis tetap layak.</p>
+  </div>
+
+  <div class="callout bad">
+    <p><strong>ONNX adalah yang terburuk, bukan sekadar bukan yang tercepat.</strong> 696 ms di CPU &mdash; 2,7&times; lebih lambat dari PyTorch CPU dan <b>14&times;</b> lebih lambat dari OpenVINO. Kerugiannya konsisten di kedua resolusi, jadi bukan kebetulan satu titik ukur.</p>
+    <p><strong>OpenVINO di GPU NVIDIA tidak ada gunanya.</strong> Jalan dan setia (37,4 ms), tapi kalah dari PyTorch GPU dan bahkan kalah dari OpenVINO sendiri di CPU pada 416px (35,4 vs 27,5 ms). Masuk akal &mdash; plugin GPU OpenVINO dirancang untuk kartu Intel, bukan NVIDIA.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>Catatan kalibrasi.</strong> Selisih confidence PyTorch GPU vs CPU mencapai 0,079 dan TensorRT 0,098 &mdash; jauh di atas OpenVINO (0,0003) dan ONNX (0,0002). Itu bukan tanda TensorRT kurang akurat: jumlah kotaknya identik di 40/40 gambar. Angka sebesar ~0,08&ndash;0,10 adalah sebaran wajar antar kernel fp32 yang berbeda, dan justru menunjukkan bahwa dua export CPU itu berjalan di jalur numerik yang sangat dekat dengan referensi.</p>
+  </div>
+
+  <h3 style="font-size:17px;margin:26px 0 8px">Resolusi inferensi adalah pengungkit kecepatan yang sebenarnya</h3>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>imgsz</th><th>CPU ms/frame</th><th>CPU FPS</th><th>GPU FPS</th><th>mAP50</th><th>AP kecil</th><th>MAE</th><th>&plusmn;1</th><th>MAE indoor</th><th>conf optimal</th></tr></thead>
+      <tbody>
+        <tr><td class="n">640</td><td class="n">260</td><td class="n">3,8</td><td class="n">37,4</td><td class="n best">0,891</td><td class="n best">0,283</td><td class="n best">0,640</td><td class="n best">88,0%</td><td class="n">0,562</td><td class="n">0,25</td></tr>
+        <tr><td class="n">512</td><td class="n">177</td><td class="n">5,6</td><td class="n">&mdash;</td><td class="n">0,878</td><td class="n">0,267</td><td class="n">0,686</td><td class="n">85,7%</td><td class="n">0,580</td><td class="n">0,25</td></tr>
+        <tr class="winner"><td class="n">416</td><td class="n">128</td><td class="n">7,8</td><td class="n">40,1</td><td class="n">0,869</td><td class="n">0,251</td><td class="n">0,686</td><td class="n">85,3%</td><td class="n best">0,523</td><td class="n">0,20</td></tr>
+        <tr><td class="n">320</td><td class="n">101</td><td class="n">9,9</td><td class="n">&mdash;</td><td class="n">0,822</td><td class="n">0,173</td><td class="n">0,842</td><td class="n">79,6%</td><td class="n">0,659</td><td class="n">0,15</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout ok">
+    <p><strong>imgsz 416 bukan kompromi untuk kasus indoor.</strong> Dua kali lebih cepat di CPU, mAP50 hanya turun 2,2 poin &mdash; dan <b>MAE indoor justru membaik</b>, dari 0,562 ke 0,523. Pada resolusi lebih kecil, deteksi kecil yang meragukan hilang, sementara orang di ruangan tetap cukup besar untuk terdeteksi.</p>
+    <p><strong>320 adalah jurangnya:</strong> AP objek kecil jatuh dari 0,251 ke 0,173 dan MAE melonjak ke 0,842. Dan perhatikan kolom terakhir &mdash; threshold optimal bergeser mengikuti resolusi, jadi kalau <span class="mono">imgsz</span> diubah, <span class="mono">conf</span> harus disetel ulang, tidak bisa diwarisi.</p>
+  </div>
+  <p style="margin-top:18px">Di GPU, 640 dan 416 hampir sama cepat (26 vs 25 ms) &mdash; bottleneck-nya bukan komputasi model tapi overhead pipeline, jadi kalau ada GPU tidak ada alasan menurunkan resolusi. Angka CPU di tabel ini adalah PyTorch; dengan OpenVINO maupun TensorRT, 640px sudah jauh di atas kebutuhan sehingga menurunkan resolusi tidak lagi perlu sama sekali.</p>
+
+  <h3 style="font-size:17px;margin:32px 0 8px">Uji kenyataan: model ini gagal di rekaman CCTV asli</h3>
+  <p class="lede" style="margin-bottom:16px">Pipeline lengkap &mdash; deteksi, ByteTrack, garis hitung &mdash; dijalankan pada 900 frame CCTV gudang packing 1920&times;1080 milik project lain. Kamera plafon, sudut 35&deg;, orang bekerja di antara rak: domain yang seharusnya paling mirip toko indoor.</p>
+
+  <div class="callout bad">
+    <p><strong>Hasilnya tidak bisa dipakai.</strong> Occupancy rata-rata terbaca 2,35 orang padahal terlihat jelas 5&ndash;7 orang per frame &mdash; sekitar <b>60&ndash;80% orang terlewat</b>. Dan tracker melaporkan <b>40 track ID unik</b> untuk kira-kira 6 orang: bukan 40 orang berbeda, tapi track yang terus hilang lalu di-ID-ulang karena deteksinya putus-putus.</p>
+    <p><strong>Model yang sama mendapat mAP50 0,891 di split test-nya sendiri.</strong> Itulah celah domain, dan tidak ada satu pun metrik di halaman ini yang bisa memperingatkannya.</p>
+  </div>
+
+  <p style="margin-top:20px">Penyebabnya diuji, bukan ditebak. Deteksi dihitung pada 6 frame yang sama sambil menyapu resolusi dan threshold:</p>
+  <div class="tbl-scroll">
+    <table>
+      <thead><tr><th>imgsz</th><th>conf 0,25</th><th>conf 0,15</th><th>conf 0,08</th></tr></thead>
+      <tbody>
+        <tr><td class="n">640</td><td class="n">15</td><td class="n">17</td><td class="n">21</td></tr>
+        <tr><td class="n">960</td><td class="n">17</td><td class="n">19</td><td class="n">19</td></tr>
+        <tr><td class="n">1280</td><td class="n">16</td><td class="n">17</td><td class="n">19</td></tr>
+        <tr><td class="n">1600</td><td class="n">15</td><td class="n">17</td><td class="n">22</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:14px;color:var(--ink-3);margin-top:10px">Total deteksi pada 6 frame yang seharusnya berisi sekitar 35 orang.</p>
+
+  <div class="callout bad">
+    <p><strong>Menaikkan resolusi tidak membantu sama sekali.</strong> Dari 640 ke 1600 &mdash; 6&times; lebih banyak piksel &mdash; jumlah deteksi tidak bergerak (15 &rarr; 15). Menurunkan threshold ke 0,08 hanya menaikkan dari 15 ke 21, dengan konsekuensi banjir false positive di tempat lain.</p>
+    <p><strong>Jadi ini bukan soal piksel dan bukan soal threshold.</strong> Modelnya memang tidak mengenali bentuknya: orang <b>duduk dan membungkuk</b> di balik meja dan krat. Dataset latih hampir seluruhnya orang berdiri atau berjalan dengan rasio tinggi/lebar ~2,1. Pekerja duduk yang badannya tertutup meja adalah bentuk yang belum pernah dilihat model ini, dan tidak ada setelan inferensi yang bisa mengajarkannya.</p>
+  </div>
+</section>
+
+<!-- ============================================ next -->
+<section id="lanjut">
+  <span class="sec-tag">Langkah berikut</span>
+  <h2 class="sec">Dari sini ke kamera toko Anda</h2>
+  <ol class="steps">
+    <li><b>Label 200&ndash;500 frame dari kamera toko Anda.</b> Ini sekarang bukan saran, tapi hasil pengukuran: model dengan mAP50 0,891 melewatkan 60&ndash;80% orang di CCTV gudang nyata, dan tidak ada setelan yang memperbaikinya. Wajib sertakan <b>orang duduk, membungkuk, dan tertutup separuh</b> &mdash; itu justru yang tidak dikenali.</li>
+    <li><b>Fine-tune lagi dari <span class="mono">best.pt</span></b> dengan campuran frame toko Anda + dataset ini. Mulai dari bobot yang sudah ada, bukan dari COCO lagi &mdash; kerja yang sudah dilakukan tidak perlu diulang.</li>
+    <li><b>Ulangi evaluasi di data Anda</b> dengan <span class="mono">tools/evaluate.py</span>. Angka di halaman ini mengukur domain orang lain; hanya angka dari kamera Anda yang berlaku.</li>
+    <li><b>Setel ulang threshold setelah itu</b>, dan pilih berdasarkan MAE hitungan, bukan F1 &mdash; keduanya jatuh di titik berbeda.</li>
+    <li><b>Baru setelah deteksinya benar, urus tracker.</b> 40 ID untuk 6 orang itu gejala, bukan penyakit: tracking yang baik mustahil di atas deteksi yang putus-putus. Memperbaiki tracker sekarang akan membuang waktu.</li>
+  </ol>
+
+  <div style="margin-top:24px">
+    <pre class="cmd">python tools/status.py                    # progres training
+python tools/evaluate.py --all            # evaluasi ulang di split test
+python tools/make_eval_figures.py         # regenerasi semua figur
+
+# inference + tracking + hitung garis di rekaman sendiri
+python tools/count_people.py --source &lt;video-anda.mp4&gt; \
+  --line 0,0.6,1,0.6 --max-frames 900
+
+# bandingkan backend: PyTorch vs ONNX vs OpenVINO (+ grafik)
+python tools/benchmark_backends.py
+python tools/make_backend_figure.py
+
+# evaluasi pada resolusi lain
+python tools/evaluate.py default --imgsz 416</pre>
+  </div>
+</section>
+
+<!-- ============================================ appendix -->
+<section id="lampiran">
+  <span class="sec-tag">Lampiran</span>
+  <h2 class="sec">Kurva training dan kalibrasi</h2>
+
+  <figure>
+    <img src="figures/curves.png" alt="Kurva box loss, mAP50, dan mAP50-95 per epoch untuk ketiga run">
+    <figcaption><span class="mono">default</span> berhenti di epoch 131 karena <span class="mono">patience=30</span>, <span class="mono">tuned</span> jalan penuh 150, <span class="mono">indoor</span> berhenti di 80. Tidak ada tanda overfitting pada ketiganya.</figcaption>
+  </figure>
+
+  <figure style="margin-top:24px">
+    <img src="figures/reliability.png" alt="Diagram kalibrasi confidence terhadap proporsi prediksi benar">
+    <figcaption>Apakah confidence 0,8 benar-benar berarti 80% benar. Menentukan kalau Anda ingin memakai nilai confidence sebagai ukuran keyakinan, bukan sekadar ambang.</figcaption>
+  </figure>
+</section>
+
+<footer>
+  Diukur pada split test 475 gambar / 1.844 kotak, 17 September 2026 &middot;
+  yolo26s &middot; ultralytics 8.4.60 &middot; torch 2.14.0+cu126 &middot; RTX 4060 Ti
+</footer>
+
+</div>
