@@ -1,0 +1,589 @@
+<title>Audit CCTV-person</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --ground:      #f4f6f8;
+  --surface:     #ffffff;
+  --surface-2:   #eaeef2;
+  --line:        #d5dce3;
+  --line-soft:   #e5eaef;
+  --ink:         #111820;
+  --ink-2:       #48545f;
+  --ink-3:       #77838f;
+
+  --accent:      #2a78d6;
+  --accent-soft: #dceafa;
+  --alt:         #eb6834;
+  --alt-soft:    #fbe4d9;
+  --aqua:        #12805a;
+  --crit:        #d2372f;
+  --crit-soft:   #fadedc;
+  --good:        #12805a;
+  --good-soft:   #d8f0e6;
+  --warn:        #b07200;
+
+  --measure: 68ch;
+  --radius: 4px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:    #0e1216;
+    --surface:   #161c22;
+    --surface-2: #1e252d;
+    --line:      #2c353e;
+    --line-soft: #222a32;
+    --ink:       #e9eef3;
+    --ink-2:     #a3b0bc;
+    --ink-3:     #7d8a96;
+
+    --accent:      #4b95e8;
+    --accent-soft: #17293f;
+    --alt:         #ee7f52;
+    --alt-soft:    #38210f;
+    --aqua:        #2bb987;
+    --crit:        #f0655f;
+    --crit-soft:   #3a1a18;
+    --good:        #2bb987;
+    --good-soft:   #0f2f25;
+    --warn:        #dba22a;
+  }
+}
+:root[data-theme="dark"] {
+  --ground:    #0e1216;
+  --surface:   #161c22;
+  --surface-2: #1e252d;
+  --line:      #2c353e;
+  --line-soft: #222a32;
+  --ink:       #e9eef3;
+  --ink-2:     #a3b0bc;
+  --ink-3:     #7d8a96;
+
+  --accent:      #4b95e8;
+  --accent-soft: #17293f;
+  --alt:         #ee7f52;
+  --alt-soft:    #38210f;
+  --aqua:        #2bb987;
+  --crit:        #f0655f;
+  --crit-soft:   #3a1a18;
+  --good:        #2bb987;
+  --good-soft:   #0f2f25;
+  --warn:        #dba22a;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; padding-block: 0 72px; }
+p, ul, ol { max-width: var(--measure); }
+
+h1, h2, h3, .ui { font-family: Archivo, "Helvetica Neue", Arial, sans-serif; text-wrap: balance; }
+.mono, code, .num {
+  font-family: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------- masthead */
+header.top { border-bottom: 2px solid var(--ink); padding-block: 44px 20px; margin-bottom: 34px; }
+.eyebrow {
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px;
+}
+h1 {
+  font-size: clamp(30px, 6.2vw, 52px); font-weight: 700;
+  letter-spacing: -.021em; line-height: 1.04; margin: 0 0 14px;
+}
+.standfirst { font-size: clamp(17px, 2.3vw, 20px); color: var(--ink-2); max-width: 62ch; margin: 0; }
+
+/* ---------------------------------------------------------- verdict */
+.verdict {
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 5px solid var(--accent); border-radius: var(--radius);
+  padding: 26px 28px;
+}
+.verdict h2 {
+  font-size: 13px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-3); margin: 0 0 12px;
+}
+.verdict .call {
+  font-family: Archivo, sans-serif; font-size: clamp(22px, 3.6vw, 30px);
+  font-weight: 700; line-height: 1.22; letter-spacing: -.015em;
+  margin: 0 0 14px; max-width: 30ch;
+}
+.verdict .call em { font-style: normal; color: var(--accent); }
+.verdict p { margin: 0; color: var(--ink-2); font-size: 16.5px; }
+
+/* ---------------------------------------------------------- sections */
+section { margin-top: 60px; scroll-margin-top: 20px; }
+h2.sec { font-size: clamp(21px, 3.2vw, 27px); font-weight: 700; letter-spacing: -.014em; margin: 0 0 6px; }
+.sec-tag {
+  font-family: "IBM Plex Mono", monospace; font-size: 11px;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3);
+  display: block; margin-bottom: 9px;
+}
+.lede { color: var(--ink-2); margin: 0 0 22px; }
+
+/* ---------------------------------------------------------- defect list */
+.defect {
+  background: var(--surface); border: 1px solid var(--line);
+  border-left: 4px solid var(--crit); border-radius: var(--radius);
+  padding: 18px 22px; margin-bottom: 14px;
+}
+.defect h3 { font-size: 16.5px; margin: 0 0 6px; }
+.defect p { margin: 0; font-size: 15.5px; color: var(--ink-2); max-width: none; }
+.defect .fixed {
+  display: inline-block; margin-top: 11px;
+  font-family: Archivo, sans-serif; font-size: 12px; font-weight: 600;
+  background: var(--good-soft); color: var(--good);
+  padding: 3px 9px; border-radius: 99px;
+}
+.defect code {
+  font-size: 13px; background: var(--surface-2); padding: 1px 5px; border-radius: 3px;
+}
+
+/* ---------------------------------------------------------- figures */
+figure { margin: 0 0 8px; }
+figure img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--line); border-radius: var(--radius); background: #14140f;
+}
+figcaption { font-size: 14px; color: var(--ink-3); margin-top: 10px; max-width: var(--measure); }
+figcaption b { color: var(--ink-2); font-weight: 600; }
+
+/* ---------------------------------------------------------- charts */
+.chart-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 20px 20px 14px;
+}
+.chart-card h3 { font-size: 15.5px; font-weight: 600; margin: 0 0 3px; letter-spacing: -.005em; }
+.chart-sub { font-size: 13px; color: var(--ink-3); margin: 0 0 14px; max-width: 54ch; }
+.chart-grid { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+@media (max-width: 720px) { .chart-grid { grid-template-columns: 1fr; } }
+svg.chart { display: block; width: 100%; height: auto; overflow: visible; }
+svg.chart text { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+
+#tip {
+  position: fixed; z-index: 50; pointer-events: none; opacity: 0; transition: opacity .1s;
+  background: var(--ink); color: var(--ground);
+  font-family: "IBM Plex Mono", monospace; font-size: 12px; line-height: 1.45;
+  padding: 7px 10px; border-radius: 3px; white-space: nowrap;
+  box-shadow: 0 4px 14px rgb(0 0 0 / .22);
+}
+
+/* ---------------------------------------------------------- domain rows */
+.dom { display: grid; gap: 2px; }
+.dom-row {
+  display: grid; grid-template-columns: minmax(130px, 170px) 1fr auto;
+  gap: 12px; align-items: center; padding: 7px 0;
+}
+.dom-row .nm { font-family: Archivo, sans-serif; font-size: 13.5px; color: var(--ink-2); }
+.dom-row .bar { height: 15px; border-radius: 2px; min-width: 2px; }
+.dom-row .vl {
+  font-family: "IBM Plex Mono", monospace; font-size: 12.5px;
+  color: var(--ink-3); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.dom-row .track { background: var(--line-soft); border-radius: 2px; }
+
+/* ---------------------------------------------------------- tables */
+.tbl-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--surface); }
+th, td { padding: 9px 13px; text-align: left; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+th {
+  font-family: Archivo, sans-serif; font-weight: 600; font-size: 12.5px;
+  background: var(--surface-2); color: var(--ink-2); border-bottom: 1px solid var(--line);
+}
+td.n { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
+tbody tr:last-child td { border-bottom: 0; }
+
+/* ---------------------------------------------------------- before/after */
+.ba-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 18px 22px; }
+.ba-card h3 { font-size: 15px; margin: 0 0 2px; }
+.ba-card .who { font-size: 12px; color: var(--ink-3); font-family: "IBM Plex Mono", monospace; margin-bottom: 14px; }
+.ba-row {
+  display: grid; grid-template-columns: 1fr auto auto auto; gap: 10px; align-items: baseline;
+  padding: 8px 0; border-top: 1px solid var(--line-soft); font-size: 13.5px;
+}
+.ba-row .k { font-family: Archivo, sans-serif; font-size: 12.5px; color: var(--ink-2); }
+.ba-row .was { font-family: "IBM Plex Mono", monospace; color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--crit); }
+.ba-row .arr { color: var(--ink-3); }
+.ba-row .now { font-family: "IBM Plex Mono", monospace; color: var(--good); font-weight: 600; }
+
+pre.tree {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px 18px; overflow-x: auto;
+  font-family: "IBM Plex Mono", monospace; font-size: 12.5px; line-height: 1.75;
+  color: var(--ink-2); margin: 0;
+}
+pre.tree b { color: var(--ink); font-weight: 600; }
+pre.tree i { color: var(--ink-3); font-style: normal; }
+
+.callout {
+  border: 1px solid var(--line); border-left: 4px solid var(--warn);
+  background: var(--surface); border-radius: var(--radius);
+  padding: 16px 20px; margin-top: 20px;
+}
+.callout p { margin: 0; font-size: 15px; color: var(--ink-2); max-width: none; }
+.callout strong { color: var(--ink); }
+
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; max-width: var(--measure); }
+.steps li {
+  counter-increment: s; position: relative; padding-left: 38px;
+  padding-block: 11px; border-top: 1px solid var(--line-soft); font-size: 15.5px;
+}
+.steps li:first-child { border-top: 0; }
+.steps li::before {
+  content: counter(s); position: absolute; left: 0; top: 12px;
+  font-family: "IBM Plex Mono", monospace; font-size: 12px; font-weight: 600;
+  color: var(--accent); background: var(--accent-soft);
+  width: 23px; height: 23px; border-radius: 50%; display: grid; place-items: center;
+}
+.steps li b { font-weight: 600; }
+
+footer {
+  margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line);
+  font-size: 13px; color: var(--ink-3); font-family: "IBM Plex Mono", monospace;
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Audit dataset &middot; person-counter</div>
+  <h1>Audit CCTV-person</h1>
+  <p class="standfirst">Export Roboflow ini dibongkar, diukur per piksel, dan ditulis ulang. Tiga cacat ditemukan di export aslinya — satu di antaranya membuat skor test-nya tidak berarti.</p>
+</header>
+
+<div class="verdict">
+  <h2>Ringkasnya</h2>
+  <p class="call">Datasetnya layak dipakai — <em>setelah</em> dibersihkan.</p>
+  <p>Export aslinya mengklaim <span class="mono">10.062</span> gambar. Yang benar-benar foto berbeda hanya <span class="mono">4.886</span>; sisanya salinan augmentasi, dan salinan itu tersebar ke split yang berbeda sehingga <span class="mono">75%</span> file test sudah pernah dilihat saat training. Versi bersihnya ada di <span class="mono">data/cctv-person/</span>: satu kelas <span class="mono">person</span>, split 80/10/10 dipisah per-scene, format COCO dan YOLO.</p>
+</div>
+
+<!-- ================================================ defects -->
+<section id="cacat">
+  <span class="sec-tag">Temuan</span>
+  <h2 class="sec">Empat cacat di export asli</h2>
+  <p class="lede">Keempatnya tidak terlihat dari struktur folder maupun README — baru muncul setelah anotasi dan pikselnya diperiksa.</p>
+
+  <div class="defect">
+    <h3>1. Tabel kelas berisi sampah dari penggabungan dataset</h3>
+    <p>Ada enam kelas terdaftar: <code>person</code>, <code>0</code>, <code>CCTV persons - v1 2024-09-16 8:18pm</code>, <code>Person</code>, <code>no_safetyshoes</code>, <code>safety_shoes</code>. Kelas <code>person</code> — satu-satunya yang namanya masuk akal — justru <b>kosong</b>; 99,5% anotasi memakai <code>category_id: 2</code>, yang namanya string timestamp. Kode yang mencari <code>name == "person"</code> mendapat dataset kosong tanpa error apa pun.</p>
+    <span class="fixed">Sudah diperbaiki &mdash; satu kelas <span class="mono">person</span></span>
+  </div>
+
+  <div class="defect">
+    <h3>2. Setengah isinya salinan augmentasi</h3>
+    <p>10.062 file hanya berisi 4.886 foto yang benar-benar berbeda. Augmentasi — rotasi dengan sudut hitam, noise bintik, pergeseran eksposur — sudah menyatu di pikselnya, padahal <code>README.roboflow.txt</code> menyatakan tidak ada augmentasi yang diterapkan. Kalimat itu menjelaskan langkah export fork-nya, bukan gambar sumbernya.</p>
+    <span class="fixed">Sudah diperbaiki &mdash; 1 salinan per foto</span>
+  </div>
+
+  <div class="defect">
+    <h3>3. Split train/valid/test bocor</h3>
+    <p>1.651 foto punya salinan di lebih dari satu split. Foto yang sama, cuma diputar dan dikasih noise, duduk di train <em>dan</em> di test sekaligus. Terparah di test: <b>75% filenya</b> sudah pernah muncul di split lain.</p>
+    <span class="fixed">Sudah diperbaiki &mdash; split dipisah per-scene</span>
+  </div>
+
+  <div class="defect">
+    <h3>4. Ada 60 kotak sepatu, bukan orang</h3>
+    <p>Kelas <code>no_safetyshoes</code> dan <code>safety_shoes</code> menyumbang 60 kotak — rasio tinggi/lebar 1,0&ndash;1,4 dan luas 0,3% frame, jelas sepatu, bukan orang (kotak orang di dataset ini rasionya 2,1). Semuanya <b>hanya ada di split valid</b>, jadi pemeriksaan yang cuma melihat split train akan melewatkannya sepenuhnya. Kalau semua kelas digabung jadi <span class="mono">person</span> tanpa filter, model belajar bahwa sepatu adalah orang.</p>
+    <span class="fixed">Sudah diperbaiki &mdash; 60 kotak sepatu dibuang</span>
+  </div>
+</section>
+
+<!-- ================================================ leakage evidence -->
+<section id="kebocoran">
+  <span class="sec-tag">Bukti</span>
+  <h2 class="sec">Seperti apa kebocorannya</h2>
+  <p class="lede">Duplikat dicari dari kemiripan piksel, bukan nama file — karena 1.507 nama file ternyata menampung lebih dari satu foto berbeda, jadi pengelompokan berdasarkan nama justru membuang gambar asli.</p>
+
+  <figure>
+    <img src="figures/fig_leakage.png" alt="Enam salinan augmentasi dari satu foto CCTV yang sama, tersebar di split train, valid, dan test">
+    <figcaption>Satu foto, <b>11 salinan</b> — muncul di train, valid, <em>dan</em> test. Model yang dilatih di train sudah melihat foto ini sebelum diuji.</figcaption>
+  </figure>
+
+  <div class="chart-grid" style="margin-top:26px">
+    <div class="chart-card">
+      <h3>File yang fotonya juga ada di split lain</h3>
+      <p class="chart-sub">Split bawaan export. Test paling parah karena ukurannya paling kecil, jadi peluang salinannya nyasar ke train paling besar.</p>
+      <svg class="chart" id="c-leak" viewBox="0 0 420 210" role="img" aria-label="Persentase file bocor per split: train 40 persen, valid 70 persen, test 75 persen"></svg>
+    </div>
+    <div class="chart-card">
+      <h3>Berapa salinan per foto</h3>
+      <p class="chart-sub">2.922 dari 4.886 foto punya lebih dari satu salinan di export; ada yang sampai 10 atau lebih.</p>
+      <svg class="chart" id="c-copies" viewBox="0 0 420 210" role="img" aria-label="Distribusi jumlah salinan augmentasi per foto unik"></svg>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><strong>Konsekuensinya praktis:</strong> berapa pun mAP yang keluar dari split test bawaan, angkanya tidak bisa dipercaya. Kalau Anda sudah pernah training dengan export aslinya, ukur ulang di <span class="mono">data/cctv-person/annotations/test.json</span>.</p>
+  </div>
+</section>
+
+<!-- ================================================ domain -->
+<section id="domain">
+  <span class="sec-tag">Kecocokan domain</span>
+  <h2 class="sec">Seberapa cocok untuk CCTV toko indoor</h2>
+  <p class="lede">Dataset ini campuran: rekaman CCTV asli dari <span class="mono">1.598</span> lokasi berbeda — indoor dan outdoor — ditambah sedikit gambar yang bukan CCTV sama sekali. Untuk kamera plafon di toko, bagian indoor-nya yang paling bernilai.</p>
+
+  <figure>
+    <img src="figures/fig_domain.png" alt="Baris atas: lima frame CCTV indoor toko dan kantor dengan kotak anotasi. Baris bawah: lima frame webcam YouTube yang bukan CCTV.">
+    <figcaption>Baris atas: kamera plafon dengan sudut 30&ndash;45&deg;, rak dan perabot menutupi orang — <b>kondisi yang sama dengan toko</b>. Baris bawah: 140 foto dari keluarga <span class="mono">youtube-*</span> yang ternyata webcam dan selfie; sudut, jarak, dan lensanya tidak ada hubungannya dengan CCTV.</figcaption>
+  </figure>
+
+  <div class="chart-card" style="margin-top:26px">
+    <h3>Komposisi domain</h3>
+    <p class="chart-sub">Dikelompokkan dari pola nama file sumbernya, lalu tiap kelompok diperiksa visual. 28% belum bisa diidentifikasi dari namanya — isinya campuran indoor dan outdoor.</p>
+    <div class="dom" id="dom-rows"></div>
+  </div>
+
+  <div class="callout">
+    <p><strong>Yang tidak dimiliki dataset ini:</strong> sudut <em>top-down</em> curam — kamera plafon yang menghadap hampir lurus ke bawah — dan lensa fisheye kuat. Kalau kamera toko Anda dipasang seperti itu, data sendiri jadi wajib, bukan opsional.</p>
+  </div>
+</section>
+
+<!-- ================================================ characteristics -->
+<section id="karakter">
+  <span class="sec-tag">Karakter data</span>
+  <h2 class="sec">Apa yang bisa dan tidak bisa dilatih dari sini</h2>
+  <p class="lede">Dua sebaran di bawah menentukan batas kemampuan model yang dilatih dari dataset ini.</p>
+
+  <div class="chart-grid">
+    <div class="chart-card">
+      <h3>Jumlah orang per frame</h3>
+      <p class="chart-sub">Rata-rata 3,8 orang. 59% frame berisi di bawah 4 orang, dan hanya 1,1% yang di atas 12. Kondisi ramai nyaris tidak terwakili.</p>
+      <svg class="chart" id="c-density" viewBox="0 0 420 220" role="img" aria-label="Histogram jumlah orang per frame di dataset CCTV-person"></svg>
+    </div>
+    <div class="chart-card">
+      <h3>Ukuran orang dalam frame</h3>
+      <p class="chart-sub">Tinggi kotak sebagai persen tinggi frame; median 149 px dari 640. Orangnya cenderung dekat ke kamera — khas CCTV ruangan, bukan lapangan luas.</p>
+      <svg class="chart" id="c-boxh" viewBox="0 0 420 220" role="img" aria-label="Distribusi tinggi kotak relatif terhadap tinggi frame"></svg>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><strong>Artinya:</strong> model yang dilatih hanya dari sini akan bagus untuk toko yang lengang dan melemah saat ramai. Dataset ini juga <strong>tidak punya track ID</strong> — cukup untuk melatih detektor, tapi bagian asosiasi antar-frame dari sebuah tracker tidak punya data latih maupun data uji di sini.</p>
+  </div>
+</section>
+
+<!-- ================================================ cleaned -->
+<section id="dirapikan">
+  <span class="sec-tag">Hasil kerja</span>
+  <h2 class="sec">Apa yang sudah dirapikan</h2>
+  <p class="lede">Semuanya reproducible lewat script di <span class="mono">tools/</span>. Urutannya penting: <span class="mono">audit_duplicates.py</span> dulu, baru <span class="mono">clean_cctv.py</span>.</p>
+
+  <div class="ba-card">
+    <h3>CCTV-person</h3>
+    <div class="who">data/cctv-person/</div>
+    <div class="ba-row"><span class="k">File gambar</span><span class="was">10.062</span><span class="arr">&rarr;</span><span class="now">4.886</span></div>
+    <div class="ba-row"><span class="k">Kelas</span><span class="was">6 (5 kosong)</span><span class="arr">&rarr;</span><span class="now">1 &middot; person</span></div>
+    <div class="ba-row"><span class="k">Foto yang lintas split</span><span class="was">1.651</span><span class="arr">&rarr;</span><span class="now">0</span></div>
+    <div class="ba-row"><span class="k">File test bocor</span><span class="was">75%</span><span class="arr">&rarr;</span><span class="now">0%</span></div>
+    <div class="ba-row"><span class="k">Kotak cacat (w/h &le; 1px)</span><span class="was">2</span><span class="arr">&rarr;</span><span class="now">0</span></div>
+    <div class="ba-row"><span class="k">Format</span><span class="was">COCO</span><span class="arr">&rarr;</span><span class="now">COCO + YOLO</span></div>
+  </div>
+
+  <div class="tbl-scroll" style="margin-top:20px">
+    <table>
+      <thead><tr><th>Split</th><th>Gambar</th><th>Kotak</th><th>Kotak/gambar</th><th>Scene</th></tr></thead>
+      <tbody>
+        <tr><td>train</td><td class="n">3.908</td><td class="n">13.701</td><td class="n">3,51</td><td class="n">&mdash;</td></tr>
+        <tr><td>val</td><td class="n">489</td><td class="n">2.386</td><td class="n">4,88</td><td class="n">&mdash;</td></tr>
+        <tr><td>test</td><td class="n">489</td><td class="n">2.572</td><td class="n">5,26</td><td class="n">&mdash;</td></tr>
+        <tr><td><b>total</b></td><td class="n"><b>4.886</b></td><td class="n"><b>18.659</b></td><td class="n"><b>3,82</b></td><td class="n"><b>1.598</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:14px;color:var(--ink-3);margin-top:12px">Tidak ada satu pun scene yang muncul di dua split — sudah diverifikasi ulang setelah pembersihan.</p>
+
+  <div style="margin-top:22px">
+    <pre class="tree"><b>data/cctv-person/</b>
+├─ images/                            <i>4.886 foto unik</i>
+├─ annotations/{train,val,test}.json  <i>COCO, satu kelas person (id 1)</i>
+├─ yolo/
+│   ├─ images/{train,val,test}/
+│   ├─ labels/{train,val,test}/       <i>class 0, format cxcywh ternormalisasi</i>
+│   └─ data.yaml                      <i>langsung dipakai Ultralytics</i>
+└─ manifest.csv                       <i>asal tiap foto: scene, split, jumlah salinan</i>
+
+<b>tools/</b>
+├─ audit_duplicates.py    <i>cari duplikat dari piksel &rarr; reports/dup_audit.json</i>
+├─ clean_cctv.py          <i>dedup, remap kelas, split ulang per-scene</i>
+└─ make_figures.py        <i>figur + reports/stats.json</i></pre>
+  </div>
+</section>
+
+<!-- ================================================ next -->
+<section id="langkah">
+  <span class="sec-tag">Langkah berikut</span>
+  <h2 class="sec">Untuk dipasang di CCTV toko</h2>
+  <ol class="steps">
+    <li><b>Ukur baseline dulu.</b> YOLO yang sudah pretrained COCO umumnya sudah kuat untuk kelas <span class="mono">person</span>. Jalankan apa adanya di rekaman toko Anda sebelum training apa pun — sering kali sudah cukup.</li>
+    <li><b>Buang keluarga <span class="mono">youtube-*</span></b> sebelum fine-tuning: 140 foto webcam dan selfie yang bukan CCTV, dan cuma menarik model menjauh dari domain Anda.</li>
+    <li><b>Fine-tune dengan sisanya</b> lewat <span class="mono">data/cctv-person/yolo/data.yaml</span>, dengan penekanan pada subset indoor kalau toko Anda indoor.</li>
+    <li><b>Label 200&ndash;500 frame dari kamera toko Anda sendiri.</b> Satu kamera, satu sudut, satu kondisi cahaya — data sekecil ini biasanya mengalahkan puluhan ribu gambar dari domain lain.</li>
+    <li><b>Untuk menghitung orang unik</b>, pasang tracker (ByteTrack / BoT-SORT) di atas detektornya. Dataset ini tidak punya track ID, jadi kualitas trackingnya harus diukur di rekaman Anda sendiri.</li>
+    <li><b>Cek lisensi</b> sebelum dipakai komersial — dataset ini tercatat <span class="mono">License: undefined</span>, yang berarti statusnya tidak jelas, bukan berarti bebas.</li>
+  </ol>
+</section>
+
+<footer>
+  Diukur langsung dari arsip pada 16 September 2026 &middot; tools/audit_duplicates.py, tools/clean_cctv.py, tools/make_figures.py
+</footer>
+
+</div>
+
+<div id="tip" role="status" aria-live="polite"></div>
+
+<script>
+const id = n => n.toLocaleString("id-ID");
+const tip = document.getElementById("tip");
+function bindTip(el, text) {
+  el.addEventListener("pointerenter", () => {
+    tip.textContent = text; tip.style.opacity = 1;
+    const r = el.getBoundingClientRect();
+    tip.style.left = Math.min(window.innerWidth - tip.offsetWidth - 10,
+                              Math.max(8, r.left + r.width / 2 - tip.offsetWidth / 2)) + "px";
+    tip.style.top = Math.max(8, r.top - tip.offsetHeight - 9) + "px";
+  });
+  el.addEventListener("pointerleave", () => { tip.style.opacity = 0; });
+}
+
+const NS = "http://www.w3.org/2000/svg";
+const mk = (t, a) => { const e = document.createElementNS(NS, t);
+  for (const k in a) e.setAttribute(k, a[k]); return e; };
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+function barChart(svgId, opts) {
+  const svg = document.getElementById(svgId);
+  svg.textContent = "";
+  const vb = svg.viewBox.baseVal, W = vb.width, H = vb.height;
+  const m = Object.assign({ t: 16, r: 8, b: 36, l: 42 }, opts.margin || {});
+  const iw = W - m.l - m.r, ih = H - m.t - m.b;
+  const S = opts.series, n = opts.labels.length;
+  const max = opts.max ?? Math.max(...S.flatMap(s => s.values));
+  const y = v => m.t + ih - (v / max) * ih;
+
+  const ticks = opts.ticks || 4;
+  for (let i = 0; i <= ticks; i++) {
+    const v = (max / ticks) * i, yy = y(v);
+    svg.appendChild(mk("line", { x1: m.l, x2: m.l + iw, y1: yy, y2: yy,
+      stroke: css("--line-soft"), "stroke-width": 1 }));
+    const t = mk("text", { x: m.l - 7, y: yy + 3.5, "text-anchor": "end",
+      "font-size": 10, fill: css("--ink-3") });
+    t.textContent = opts.yFmt ? opts.yFmt(v) : Math.round(v);
+    svg.appendChild(t);
+  }
+
+  const slot = iw / n, inner = slot * 0.74, bw = (inner - (S.length - 1) * 2) / S.length;
+  S.forEach((s, si) => s.values.forEach((v, i) => {
+    const h = Math.max(v > 0 ? 1.5 : 0, (v / max) * ih);
+    if (!h) return;
+    const x = m.l + i * slot + (slot - inner) / 2 + si * (bw + 2);
+    const r = mk("rect", { x, y: y(v), width: bw, height: h, rx: Math.min(2.5, bw / 2),
+      fill: s.color, opacity: .92 });
+    r.style.cursor = "crosshair";
+    bindTip(r, `${opts.labels[i]} → ${opts.fmt(v)}`);
+    svg.appendChild(r);
+  }));
+
+  svg.appendChild(mk("line", { x1: m.l, x2: m.l + iw, y1: m.t + ih, y2: m.t + ih,
+    stroke: css("--line"), "stroke-width": 1.5 }));
+
+  const every = opts.labelEvery || 1;
+  opts.labels.forEach((L, i) => {
+    if (i % every) return;
+    const t = mk("text", { x: m.l + i * slot + slot / 2, y: m.t + ih + 15,
+      "text-anchor": "middle", "font-size": 9.5, fill: css("--ink-3") });
+    t.textContent = L;
+    svg.appendChild(t);
+  });
+  if (opts.xTitle) {
+    const t = mk("text", { x: m.l + iw / 2, y: H - 3, "text-anchor": "middle",
+      "font-size": 10, fill: css("--ink-3") });
+    t.textContent = opts.xTitle;
+    svg.appendChild(t);
+  }
+  (opts.callouts || []).forEach(c => {
+    const s = S[0], v = s.values[c];
+    const x = m.l + c * slot + (slot - inner) / 2 + bw / 2;
+    const t = mk("text", { x, y: y(v) - 6, "text-anchor": "middle",
+      "font-size": 11, "font-weight": 600, fill: s.color });
+    t.textContent = opts.fmt(v);
+    svg.appendChild(t);
+  });
+}
+
+/* domain composition: labelled rows, so identity never rests on color alone */
+const DOMAIN = [
+  ["CCTV indoor",        1753, "--accent", "toko, gudang, kantor, koridor, lobi"],
+  ["CCTV outdoor",       1489, "--alt",    "jalan, parkiran, kampus, taman"],
+  ["Belum teridentifikasi", 1362, "--ink-3", "campuran, nama file tidak berpola"],
+  ["Pintu masuk / semi",  142, "--aqua",   "ambang indoor-outdoor"],
+  ["Bukan CCTV",          140, "--crit",   "webcam dan selfie YouTube - buang"],
+];
+const TOT = DOMAIN.reduce((a, r) => a + r[1], 0);
+document.getElementById("dom-rows").innerHTML = DOMAIN.map(([nm, v, c, note]) => `
+  <div class="dom-row">
+    <span class="nm">${nm}</span>
+    <span class="track"><span class="bar" style="display:block;width:${v / TOT * 100}%;background:var(${c})"
+      title="${note}"></span></span>
+    <span class="vl">${id(v)} &middot; ${(v / TOT * 100).toFixed(1)}%</span>
+  </div>`).join("");
+
+function drawAll() {
+  const A = css("--accent"), ALT = css("--alt"), CRIT = css("--crit");
+  const pct = v => v.toFixed(v < 1 && v > 0 ? 1 : 0) + "%";
+
+  barChart("c-leak", {
+    labels: ["train", "valid", "test"],
+    series: [{ values: [40, 70, 75], color: CRIT }],
+    max: 100, ticks: 4, fmt: v => v + "%", yFmt: v => v + "%",
+    callouts: [0, 1, 2], xTitle: "split bawaan export",
+  });
+
+  barChart("c-copies", {
+    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10+"],
+    series: [{ values: [1964, 1563, 829, 332, 118, 39, 20, 11, 5, 5], color: ALT }],
+    ticks: 4, fmt: v => id(v) + " foto", yFmt: v => id(Math.round(v)),
+    callouts: [0, 1], xTitle: "jumlah salinan augmentasi per foto",
+  });
+
+  const dens = [1407, 1477, 936, 602, 234, 130, 41, 15, 4, 4, 0, 1, 2, 7, 26]
+    .map(v => v / 4886 * 100);
+  barChart("c-density", {
+    margin: { t: 20, r: 8, b: 40, l: 42 },
+    labels: ["0–2", "2–4", "4–6", "6–8", "8–10", "10–12", "12–14", "14–16",
+             "16–18", "18–20", "20–22", "22–24", "24–26", "26–28", "28+"],
+    series: [{ values: dens, color: A }],
+    ticks: 4, fmt: pct, yFmt: v => Math.round(v) + "%",
+    callouts: [0, 1], labelEvery: 2,
+    xTitle: "jumlah orang dalam satu frame",
+  });
+
+  const bh = [611, 2368, 2463, 2202, 2571, 2247, 1543, 1082, 955, 620,
+              401, 434, 270, 180, 134, 144, 109, 82, 75, 168].map(v => v / 18659 * 100);
+  barChart("c-boxh", {
+    margin: { t: 20, r: 8, b: 40, l: 42 },
+    labels: ["5", "10", "15", "20", "25", "30", "35", "40", "45", "50",
+             "55", "60", "65", "70", "75", "80", "85", "90", "95", "100"],
+    series: [{ values: bh, color: A }],
+    ticks: 4, fmt: pct, yFmt: v => Math.round(v) + "%",
+    labelEvery: 2, xTitle: "tinggi kotak sebagai % tinggi frame",
+  });
+}
+
+drawAll();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawAll);
+new MutationObserver(drawAll).observe(document.documentElement,
+  { attributes: true, attributeFilter: ["data-theme"] });
+</script>
